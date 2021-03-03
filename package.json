@@ -9,6 +9,16 @@
 		"test": "mocha \"./test/**/**.test.js\" --recursive --require @babel/register",
 		"cover": "nyc --reporter=text yarn test"
 	},
+	"license": "MIT",
+	"author": "Michael Garcia",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/mikesaintsg/hydra-svg-js.git"
+	},
+	"bugs": {
+		"url": "https://github.com/mikesaintsg/hydra-svg-js/issues"
+	},
+	"homepage": "https://github.com/mikesaintsg/hydra-svg-js#readme",
 	"keywords": [
 		"hydra-svg",
 		"hyrdra",
@@ -18,8 +28,6 @@
 		"heroicons",
 		"fontawesome"
 	],
-	"author": "mikesaintsg",
-	"license": "MIT",
 	"devDependencies": {
 		"@babel/cli": "^7.13.0",
 		"@babel/core": "^7.13.8",

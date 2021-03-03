@@ -1,0 +1,10 @@
+test/
+src/
+.idea
+.nyc_output
+coverage
+.editorconfig
+.eslintignore
+.eslintrc.js
+.gitignore
+gulpfile.js

@@ -1,0 +1,41 @@
+{
+	"name": "hydra-svg-js",
+	"version": "0.0.6",
+	"description": "Hydrate SVG tags with icons from your favorite libraries",
+	"main": "dist/main.js",
+	"scripts": {
+		"dist": "gulp",
+		"lint": "eslint .",
+		"test": "mocha \"./test/**/**.test.js\" --recursive --require @babel/register",
+		"cover": "nyc --reporter=text yarn test"
+	},
+	"keywords": [
+		"hydra-svg",
+		"hyrdra",
+		"hydrate",
+		"svg",
+		"icons",
+		"heroicons",
+		"fontawesome"
+	],
+	"author": "mikesaintsg",
+	"license": "MIT",
+	"devDependencies": {
+		"@babel/cli": "^7.13.0",
+		"@babel/core": "^7.13.8",
+		"@babel/preset-env": "^7.13.9",
+		"@babel/register": "^7.13.8",
+		"chai": "^4.3.0",
+		"eslint": "^7.21.0",
+		"gulp": "^4.0.2",
+		"gulp-babel": "^8.0.0",
+		"gulp-uglify": "^3.0.2",
+		"htmlparser2": "^6.0.0",
+		"jsdom": "^16.4.0",
+		"mocha": "^8.3.0",
+		"nyc": "^15.1.0"
+	},
+	"dependencies": {
+		"core-js": "3"
+	}
+}

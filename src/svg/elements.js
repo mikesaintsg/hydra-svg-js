@@ -24,6 +24,7 @@ const elements = {
 				})
 			})
 		})
+
 		return svg;
 	}
 }

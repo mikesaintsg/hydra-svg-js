@@ -33,15 +33,19 @@
 		"@babel/core": "^7.13.8",
 		"@babel/preset-env": "^7.13.9",
 		"@babel/register": "^7.13.8",
-		"chai": "^4.3.0",
+		"chai": "^4.3.3",
 		"core-js": "^3.9.1",
 		"eslint": "^7.21.0",
 		"gulp": "^4.0.2",
-		"gulp-babel": "^8.0.0",
+		"gulp-better-rollup": "^4.0.1",
+		"gulp-sizereport": "^1.2.1",
+		"gulp-sourcemaps": "^3.0.0",
 		"gulp-uglify": "^3.0.2",
-		"htmlparser2": "^6.0.0",
 		"jsdom": "^16.4.0",
 		"mocha": "^8.3.0",
-		"nyc": "^15.1.0"
+		"nyc": "^15.1.0",
+		"rollup": "^1.32.1",
+		"rollup-plugin-babel": "^4.4.0",
+		"rollup-plugin-commonjs": "^10.1.0"
 	}
 }

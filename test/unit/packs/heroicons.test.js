@@ -1,8 +1,8 @@
-const testCase = require('../../cases/testCase')
+import testCase from '../../cases/testCase';
 
 testCase()
 
-const heroicons = require('../../../dist/packs/heroicons')
+import heroicons from '../../../src/packs/heroicons';
 
 describe('Heroicons pack', function () {
 	it('is an Array', function () {

@@ -1,5 +1,6 @@
+import chai from 'chai';
+
 function testCase() {
-	const chai = require('chai')
 	const {expect, should, assert} = chai
 	chai.should()
 
@@ -7,4 +8,4 @@ function testCase() {
 	global.assert = assert
 }
 
-module.exports = testCase
+export default testCase;

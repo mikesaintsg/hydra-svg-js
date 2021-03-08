@@ -1,7 +1,6 @@
-const fs = require('fs')
-const path = require('path');
-
-const jsdom = require("jsdom");
+import fs from 'fs';
+import path from 'path';
+import jsdom from 'jsdom';
 const {JSDOM} = jsdom;
 
 function htmlFileString(file) {
@@ -15,4 +14,4 @@ function generateDom(file) {
 	global.document = dom.window.document;
 }
 
-module.exports = generateDom
+export default generateDom;

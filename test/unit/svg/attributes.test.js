@@ -1,10 +1,10 @@
-const testCase = require('../../cases/testCase')
-const generateDom = require("../../app/dom");
+import testCase from '../../cases/testCase';
+import generateDom from '../../app/dom';
 
 testCase()
 generateDom('app.html')
 
-const attributes = require("../../../dist/svg/attributes.js")
+import {setAttributesFromObject, setWithExistingAttributes} from '../../../src/svg/attributes.js';
 
 describe('Svg attributes', function () {
 	context('setAttributesFromObject method', function () {
@@ -15,7 +15,7 @@ describe('Svg attributes', function () {
 
 			Array.from(document.getElementsByTagName('svg')).forEach((element) => {
 
-				attributes.setAttributesFromObject(element, {
+				setAttributesFromObject(element, {
 					addedAttribute: "addedAttribute",
 				})
 
@@ -31,7 +31,7 @@ describe('Svg attributes', function () {
 
 				const expected = 'appendedAttribute ' + element.getAttribute('class');
 
-				attributes.setAttributesFromObject(element, {
+				setAttributesFromObject(element, {
 					class: "appendedAttribute",
 				})
 
@@ -45,7 +45,7 @@ describe('Svg attributes', function () {
 
 			Array.from(document.getElementsByTagName('svg')).forEach((element) => {
 
-				attributes.setAttributesFromObject(element, {
+				setAttributesFromObject(element, {
 					path: ["an Array instead of string"],
 				})
 
@@ -64,7 +64,7 @@ describe('Svg attributes', function () {
 
 				const expected = 'appendedAttribute ' + element.getAttribute('class');
 
-				attributes.setWithExistingAttributes(element, "class", "appendedAttribute")
+				setWithExistingAttributes(element, "class", "appendedAttribute")
 
 				expect(expected).deep.equals(actual(element))
 			});

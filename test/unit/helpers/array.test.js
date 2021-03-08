@@ -1,8 +1,8 @@
-const testCase = require('../../cases/testCase')
+import testCase from '../../cases/testCase';
 
 testCase()
 
-const {ifArray, ifNotArray} = require("../../../dist/helpers/array.js")
+import { ifArray, ifNotArray } from '../../../src/helpers/array.js';
 
 describe('Array helper', function () {
 

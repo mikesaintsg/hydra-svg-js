@@ -1,8 +1,8 @@
-const testCase = require('../../cases/testCase')
+import testCase from '../../cases/testCase';
 
 testCase()
 
-const {forIn} = require("../../../dist/helpers/object.js")
+import { forIn } from '../../../src/helpers/object.js';
 
 describe('Object helper', function () {
 	context('forIn function', function () {

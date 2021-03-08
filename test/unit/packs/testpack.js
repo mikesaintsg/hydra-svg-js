@@ -12,4 +12,4 @@ const testpack = [
 	}
 ];
 
-module.exports = testpack;
+export default testpack;

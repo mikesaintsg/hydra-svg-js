@@ -1,4 +1,4 @@
-const heroicons = require('./heroicons')
-const fontawesome = require('./fontawesome')
+import heroicons from './heroicons';
+import fontawesome from './fontawesome';
 
-module.exports = {heroicons, fontawesome}
+export default {heroicons, fontawesome};

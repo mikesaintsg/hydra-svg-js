@@ -1,8 +1,8 @@
-const testCase = require('../../cases/testCase')
+import testCase from '../../cases/testCase';
 
 testCase()
 
-const fontawesome = require('../../../dist/packs/fontawesome')
+import fontawesome from '../../../src/packs/fontawesome';
 
 describe('Fontawesome pack', function () {
 	it('is an Array', function () {

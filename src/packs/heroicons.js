@@ -24,4 +24,4 @@ const heroicons = [
 	}
 ];
 
-module.exports = heroicons;
+export default heroicons;

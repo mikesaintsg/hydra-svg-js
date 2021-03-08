@@ -12,5 +12,5 @@ const fontawesome = [
 	}
 ];
 
-module.exports = fontawesome;
+export default fontawesome;
 

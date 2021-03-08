@@ -1,33 +1,27 @@
-const {forIn} = require("./helpers/object.js");
-const {exactStringInClass} = require("./helpers/regex.js");
-const packages = require('./packs/index')
-const Svg = require('./svg/index.js')
+import {forIn} from './helpers/object.js';
+import {exactStringInClass} from './helpers/regex.js';
+import packages from './packs/index';
+import {attributesHydrate} from "./svg/attributes";
+import {generateElementAndAppend} from "./svg/elements";
+
+function checkElementForIconNameInPacks(element, packs, callback) {
+	forIn(packs, (icons) => {
+		icons.forEach((icon) => {
+			if (exactStringInClass(element, icon.name)) callback(element, icon);
+		});
+	});
+}
 
 const hydra = {
-
-	hydrate() {
-
-		Svg.inDocument().forEach((element) => {
-
-			this.checkElementForIconNameInPacks(element,
+	async hydrate() {
+		await Array.from(document.getElementsByTagName('svg')).forEach((element) => {
+			checkElementForIconNameInPacks(element,
 				packages, (checkedElement, icon) => {
-
-					Svg.attributes().hydrate(checkedElement, icon);
-					Svg.elements().generate(checkedElement, icon);
+					attributesHydrate(checkedElement, icon);
+					generateElementAndAppend(checkedElement, icon);
 				});
 		});
 	},
-
-	checkElementForIconNameInPacks(element, packs, callback) {
-
-		forIn(packs, (icons) => {
-
-			icons.forEach((icon) => {
-
-				if (exactStringInClass(element, icon.name)) callback(element, icon);
-			});
-		});
-	}
 };
 
-module.exports = hydra;
+export default hydra;

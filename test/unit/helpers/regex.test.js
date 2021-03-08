@@ -1,10 +1,10 @@
-const testCase = require('../../cases/testCase')
-const generateDom = require("../../app/dom");
+import testCase from '../../cases/testCase';
+import generateDom from '../../app/dom';
 
 testCase()
 generateDom('app.html')
 
-const {escapeSpecialCharacters, exactString, exactStringInClass} = require("../../../dist/helpers/regex.js")
+import { escapeSpecialCharacters, exactString, exactStringInClass } from '../../../src/helpers/regex.js';
 
 describe('Regex helper', function () {
 	context('escapeSpecialCharacters function', function () {

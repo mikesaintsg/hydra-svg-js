@@ -1,8 +1,8 @@
-import testCase from '../../cases/testCase';
+import testCase from '../../cases/testCase.js';
 
 testCase()
 
-import fontawesome from '../../../src/packs/fontawesome';
+import fontawesome from '../../../src/packs/fontawesome.js';
 
 describe('Fontawesome pack', function () {
 	it('is an Array', function () {

@@ -1,4 +1,4 @@
-import testCase from '../../cases/testCase';
+import testCase from '../../cases/testCase.js';
 
 testCase()
 

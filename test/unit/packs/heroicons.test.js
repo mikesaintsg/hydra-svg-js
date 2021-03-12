@@ -1,8 +1,8 @@
-import testCase from '../../cases/testCase';
+import testCase from '../../cases/testCase.js';
 
 testCase()
 
-import heroicons from '../../../src/packs/heroicons';
+import heroicons from '../../../src/packs/heroicons.js';
 
 describe('Heroicons pack', function () {
 	it('is an Array', function () {

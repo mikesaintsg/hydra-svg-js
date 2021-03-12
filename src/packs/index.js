@@ -1,4 +1,4 @@
-import heroicons from './heroicons';
-import fontawesome from './fontawesome';
+import heroicons from './heroicons.js';
+import fontawesome from './fontawesome.js';
 
-export default {heroicons, fontawesome};
+export default {fontawesome, heroicons};

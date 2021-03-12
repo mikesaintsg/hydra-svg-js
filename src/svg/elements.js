@@ -1,6 +1,6 @@
 import {forIn} from '../helpers/object.js';
 import {ifArray} from '../helpers/array.js';
-import {attributesHydrate} from "./attributes";
+import {attributesHydrate} from "./attributes.js";
 
 export function createElement(element) {
 

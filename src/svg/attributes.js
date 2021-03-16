@@ -1,25 +1,23 @@
-import {forIn} from '../helpers/object.js';
-import {ifNotArray} from '../helpers/array.js';
+exports.attributesHydrate = function (element, object) {
 
-export function attributesHydrate(element, object) {
-
-	return setAttributesFromObject(element, object);
+	return exports.setAttributesFromObject(element, object);
 }
 
-export function setAttributesFromObject(element, object) {
+exports.setAttributesFromObject = function (element, object) {
+	for (const attribute in object) {
 
-	forIn(object, (values, attribute) => {
+		const values = object[attribute];
 
-		ifNotArray(values, (value) => {
+		if (!Array.isArray(values)) {
 
-			setWithExistingAttributes(element, attribute, value);
-		});
-	});
+			exports.setWithExistingAttributes(element, attribute, values);
+		}
+	}
 
 	return element;
 }
 
-export function setWithExistingAttributes(element, attribute, value) {
+exports.setWithExistingAttributes = function (element, attribute, value) {
 
 	if (element.getAttribute(attribute)) value = value + ' ' + element.getAttribute(attribute);
 

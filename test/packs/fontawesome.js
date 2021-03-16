@@ -1,6 +1,5 @@
-const fontawesome = [
+exports.atom =
 	{
-		name: 'fontawesome-atom',
 		xmlns: "http://www.w3.org/2000/svg",
 		viewBox: "0 0 448 512",
 		path: [
@@ -10,7 +9,3 @@ const fontawesome = [
 			}
 		]
 	}
-];
-
-export default fontawesome;
-

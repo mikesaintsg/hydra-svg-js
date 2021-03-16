@@ -1,4 +1,4 @@
-import jsdom from 'jsdom';
+const jsdom = require('jsdom');
 
 const {JSDOM} = jsdom;
 
@@ -8,4 +8,4 @@ function generateDom(string) {
 	global.document = dom.window.document;
 }
 
-export default generateDom;
+module.exports = generateDom;

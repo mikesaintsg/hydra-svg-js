@@ -11,13 +11,13 @@ const commonjs = require('rollup-plugin-commonjs');
 
 const babelOptions = require('./babel.config');
 
-fs.rmdirSync('dist', { recursive: true });
+fs.rmdirSync('dist', {recursive: true});
 
-exports.default = function() {
+exports.default = function () {
 	return src('src/main.js')
 		.pipe(sourcemaps.init())
 		.pipe(rollup(
-			{plugins: [commonjs(),babel(babelOptions)]}, 'cjs'))
+			{plugins: [commonjs(), babel(babelOptions)]}, 'cjs'))
 		.pipe(sourcemaps.write())
 		.pipe(dest('dist/'))
 		.pipe(src('dist/**/*.js'))

@@ -1,9 +1,11 @@
-import testCase from '../../cases/testCase.js';
-import generateDom from '../../dom/generateDom.js';
+const testCase = require('../cases/testCase.js');
+const generateDom  = require('../dom/generateDom.js');
+const hydra = require("../../src/main.js");
 
 testCase()
-generateDom(`<svg class="heroicons-academicCap targetClass" id="target"></svg>
-<svg class="fontawesome-atom nottargetClass argetClass" id="nottarget"></svg>
+generateDom(`
+<svg pkg="heroicons" icon="academicCap" class="heroicons-academicCap targetClass" id="target"></svg>
+<svg pkg="fontawesome" icon="atom" class="fontawesome-atom nottargetClass argetClass" id="nottarget"></svg>
 <svg class="testpack-icon" id="testpack-icon-target"></svg>
 <svg class="testpack-icon" id="testpack-icon-complete" name="fontawesome-atom" viewBox="0 0 448 512"
 xmlns="http://www.w3.org/2000/svg">
@@ -11,46 +13,12 @@ xmlns="http://www.w3.org/2000/svg">
 fill="currentColor"></path>
 </svg>`)
 
-import { escapeSpecialCharacters, exactString, exactStringInClass } from '../../../src/helpers/regex.js';
 
-describe('Regex helper', function () {
-	context('escapeSpecialCharacters function', function () {
-		it('escapes special characters that can be injected into regular expressions', function () {
-
-			const expected = 'test\\-\\[\\]\\{\\}\\(\\)\\*\\+\\?\\.\\\\\\^\\$\\|\\#\\\\s\\,\\/\\:\\!\\<\\=';
-			const actual = escapeSpecialCharacters('test-[]{}()*+?.\\^$|#\\s,/:!<=')
-
-			expect(expected).deep.equals(actual)
-		});
-	});
-
-	context('exactString function', function () {
-		it('creates a regular expression around the string of the parameter provided', function () {
-
-			const expected = "/(?<![\\w])test(?![\\w])/"
-			const actual = `${exactString("test")}`
-
-			expect(expected).deep.equals(actual)
-		});
-	});
-
-	context('exactStringInClass function', function () {
-		context('searches the class of an element for a specific string and', function () {
-			it('returns true if found', function () {
-
-				const targetElement = document.getElementById('target')
-				const actual = exactStringInClass(targetElement, 'targetClass')
-
-				expect(true).deep.equals(actual)
-			});
-
-			it('returns false if not found', function () {
-
-				const nottargetElement = document.getElementById('nottarget')
-				const actual = exactStringInClass(nottargetElement, 'targetClass')
-
-				expect(false).deep.equals(actual)
-			});
+describe("hydra", function () {
+	it("main", function () {
+		hydra.hydrate({
+			'fontawesome': require('../packs/fontawesome.js'),
+			'heroicons': require('../packs/heroicons.js')
 		})
-	});
-});
+	})
+})

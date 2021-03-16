@@ -1,26 +1,26 @@
-import {forIn} from '../helpers/object.js';
-import {ifArray} from '../helpers/array.js';
-import {attributesHydrate} from "./attributes.js";
+const {attributesHydrate} = require("./attributes.js");
 
-export function createElement(element) {
+exports.createElement = function (element) {
 
 	return document.createElementNS("http://www.w3.org/2000/svg", element);
 }
 
-export function generateElementAndAppend(svg, iconObject) {
+exports.generateElementAndAppend = function (svg, iconObject) {
 
-	forIn(iconObject, (values, element) => {
+	for (const element in iconObject) {
 
-		ifArray(values, () => {
+		const values = iconObject[element];
+
+		if (Array.isArray(values)) {
 
 			values.forEach((elementObject) => {
 
 				svg.appendChild(
 					attributesHydrate(
-						createElement(element), elementObject));
+						exports.createElement(element), elementObject));
 			})
-		})
-	})
+		}
+	}
 
 	return svg;
 }

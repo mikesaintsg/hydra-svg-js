@@ -1,6 +1,3 @@
-const {attributesHydrate} = require("./svg/attributes.js");
-const {generateElementAndAppend} = require("./svg/elements.js");
-
 const hydra = {
 	hydrate(packages) {
 		initDocSvgEls(docElsArray =>
@@ -39,7 +36,6 @@ function createPkgIconElsObject(elsArray, callback) {
 }
 
 function importPackagesInObject(pkgIconElsObject, packages, callback) {
-
 	for (const pkgName in pkgIconElsObject) {
 		const importedPkg = packages[pkgName];
 		callback(pkgIconElsObject[pkgName], importedPkg)
@@ -55,9 +51,45 @@ function getIconArrayOfEls(pkgObject, importedPkgObject, callback) {
 
 function hydrateEachElInIconArray(iconArray, iconName, importedPkgObject) {
 	iconArray.forEach(el => {
-		attributesHydrate(el, importedPkgObject[iconName])
+		setAttributesFromObject(el, importedPkgObject[iconName])
 		generateElementAndAppend(el, importedPkgObject[iconName])
 	})
+}
+
+function setAttributesFromObject(element, object) {
+	for (const attribute in object) {
+
+		let values = object[attribute];
+
+		if (!Array.isArray(values)) {
+
+			if (element.getAttribute(attribute)) values = values + ' ' + element.getAttribute(attribute);
+
+			element.setAttribute(attribute, values);
+		}
+	}
+
+	return element;
+}
+
+function generateElementAndAppend(svg, iconObject) {
+
+	for (const element in iconObject) {
+
+		const values = iconObject[element];
+
+		if (Array.isArray(values)) {
+
+			values.forEach((elementObject) => {
+
+				svg.appendChild(
+					setAttributesFromObject(
+						document.createElementNS("http://www.w3.org/2000/svg", element), elementObject));
+			})
+		}
+	}
+
+	return svg;
 }
 
 module.exports = hydra;

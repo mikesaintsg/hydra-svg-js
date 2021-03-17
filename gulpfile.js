@@ -8,6 +8,7 @@ const sizereport = require('gulp-sizereport')
 
 const babel = require('rollup-plugin-babel')
 const commonjs = require('rollup-plugin-commonjs');
+const stripCode = require('rollup-plugin-strip-code')
 
 const babelOptions = require('./babel.config');
 
@@ -17,7 +18,16 @@ exports.default = function () {
 	return src('src/main.js')
 		.pipe(sourcemaps.init())
 		.pipe(rollup(
-			{plugins: [commonjs(), babel(babelOptions)]}, 'cjs'))
+			{
+				plugins: [
+					stripCode({
+						start_comment: 'TEST-ONLY:START',
+						end_comment: 'TEST-ONLY:END'
+					}),
+					commonjs(),
+					babel(babelOptions)
+				]
+			}, 'cjs'))
 		.pipe(sourcemaps.write())
 		.pipe(dest('dist/'))
 		.pipe(src('dist/**/*.js'))

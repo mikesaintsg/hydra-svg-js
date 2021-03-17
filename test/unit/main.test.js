@@ -1,5 +1,5 @@
 const testCase = require('../cases/testCase.js');
-const generateDom  = require('../dom/generateDom.js');
+const generateDom = require('../dom/generateDom.js');
 const hydra = require("../../src/main.js");
 
 testCase()

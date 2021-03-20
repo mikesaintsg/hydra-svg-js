@@ -9,5 +9,6 @@
 				"modules": "auto"
 			}
 		]
-	]
+	],
+	"plugins": ["@babel/plugin-transform-runtime"]
 }

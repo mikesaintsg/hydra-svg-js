@@ -8,5 +8,5 @@ coverage
 .eslintrc.json
 .gitattributes
 .gitignore
-gulpfile.js
 babel.config.js
+rollup.config.js

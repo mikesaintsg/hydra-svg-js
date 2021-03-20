@@ -1,7 +1,7 @@
 const hydra = {
 	hydrate(pkgs) {
 
-		/* TEST-ONLY:START */exports./* TEST-ONLY:END */
+			/* TEST-ONLY:START */exports./* TEST-ONLY:END */
 			initDocSvgs(docElsArray =>
 
 				/* TEST-ONLY:START */exports./* TEST-ONLY:END */

@@ -1,8 +1,8 @@
 const hydra = {
-	hydrate(packages) {
+	hydrate(pkgs) {
 
 		/* TEST-ONLY:START */exports./* TEST-ONLY:END */
-			initDocSvgEls(docElsArray =>
+			initDocSvgs(docElsArray =>
 
 				/* TEST-ONLY:START */exports./* TEST-ONLY:END */
 				filterForAttrs(docElsArray, filteredElsArray =>
@@ -11,7 +11,7 @@ const hydra = {
 					createPkgIconElsObject(filteredElsArray, pkgIconElsObject =>
 
 						/* TEST-ONLY:START */exports./* TEST-ONLY:END */
-						importPackagesInObject(pkgIconElsObject, packages, (pkgObject, importedPkgObject) =>
+						importPkgs(pkgIconElsObject, pkgs, (pkgObject, importedPkgObject) =>
 
 							/* TEST-ONLY:START */exports./* TEST-ONLY:END */
 							getIconArrayOfEls(pkgObject, (iconArray, iconName) =>
@@ -21,23 +21,23 @@ const hydra = {
 	}
 };
 
-/* TEST-ONLY:START */exports.initDocSvgEls = /* TEST-ONLY:END */
+/* TEST-ONLY:START */exports.initDocSvgs = /* TEST-ONLY:END */
 
-	function initDocSvgEls(callback) {
-		callback(Array.from(document.getElementsByTagName('svg')))
+	function initDocSvgs(cb) {
+		cb(Array.from(document.getElementsByTagName('svg')))
 	}
 
 /* TEST-ONLY:START */exports.filterForAttrs = /* TEST-ONLY:END */
 
-	function filterForAttrs(elsArray, callback) {
-		callback(elsArray.filter(el => {
+	function filterForAttrs(elsArray, cb) {
+		cb(elsArray.filter(el => {
 			if (el.getAttribute('pkg') && el.getAttribute('icon')) return el
 		}))
 	}
 
 /* TEST-ONLY:START */exports.createPkgIconElsObject = /* TEST-ONLY:END */
 
-	function createPkgIconElsObject(elsArray, callback) {
+	function createPkgIconElsObject(elsArray, cb) {
 		const pkgIconElsObject = {};
 
 		elsArray.forEach(el => {
@@ -50,24 +50,24 @@ const hydra = {
 			else pkgIconElsObject[elPkg][elIcon] = [el];
 		})
 
-		callback(pkgIconElsObject)
+		cb(pkgIconElsObject)
 	}
 
-/* TEST-ONLY:START */exports.importPackagesInObject = /* TEST-ONLY:END */
+/* TEST-ONLY:START */exports.importPkgs = /* TEST-ONLY:END */
 
-	function importPackagesInObject(pkgIconElsObject, packages, callback) {
+	function importPkgs(pkgIconElsObject, pkgs, cb) {
+
 		for (const pkgName in pkgIconElsObject) {
-			const importedPkg = packages[pkgName];
-			callback(pkgIconElsObject[pkgName], importedPkg)
+			cb(pkgIconElsObject[pkgName], pkgs[pkgName])
 		}
 	}
 
 /* TEST-ONLY:START */exports.getIconArrayOfEls = /* TEST-ONLY:END */
 
-	function getIconArrayOfEls(pkgObject, callback) {
+	function getIconArrayOfEls(pkgObject, cb) {
 
 		for (const iconName in pkgObject) {
-			callback(pkgObject[iconName], iconName)
+			cb(pkgObject[iconName], iconName)
 		}
 	}
 
@@ -76,48 +76,50 @@ const hydra = {
 	function hydrateEachElInIconArray(iconArray, iconName, importedPkgObject) {
 		iconArray.forEach(el => {
 
-			/* TEST-ONLY:START */exports./* TEST-ONLY:END */
-				setAttributesFromObject(el, importedPkgObject[iconName])
+			/* TEST-ONLY:START */
+			exports./* TEST-ONLY:END */
+				setAttrsFromObject(el, importedPkgObject[iconName])
 
-			/* TEST-ONLY:START */exports./* TEST-ONLY:END */
-				generateElementAndAppend(el, importedPkgObject[iconName])
+			/* TEST-ONLY:START */
+			exports./* TEST-ONLY:END */
+				generateElAndAppend(el, importedPkgObject[iconName])
 		})
 	}
 
-/* TEST-ONLY:START */exports.setAttributesFromObject = /* TEST-ONLY:END */
+/* TEST-ONLY:START */exports.setAttrsFromObject = /* TEST-ONLY:END */
 
-	function setAttributesFromObject(element, object) {
+	function setAttrsFromObject(el, object) {
 		for (const attribute in object) {
 
 			let values = object[attribute];
 
 			if (!Array.isArray(values)) {
 
-				if (element.getAttribute(attribute)) values = values + ' ' + element.getAttribute(attribute);
+				if (el.getAttribute(attribute)) values = values + ' ' + el.getAttribute(attribute);
 
-				element.setAttribute(attribute, values);
+				el.setAttribute(attribute, values);
 			}
 		}
 
-		return element;
+		return el;
 	}
 
-/* TEST-ONLY:START */exports.generateElementAndAppend = /* TEST-ONLY:END */
+/* TEST-ONLY:START */exports.generateElAndAppend = /* TEST-ONLY:END */
 
-	function generateElementAndAppend(svg, iconObject) {
+	function generateElAndAppend(svg, iconObject) {
 
-		for (const element in iconObject) {
+		for (const el in iconObject) {
 
-			const values = iconObject[element];
+			const values = iconObject[el];
 
 			if (Array.isArray(values)) {
 
-				values.forEach((elementObject) => {
+				values.forEach((elObject) => {
 
 					svg.appendChild(
 						/* TEST-ONLY:START */exports./* TEST-ONLY:END */
-							setAttributesFromObject(
-								document.createElementNS("http://www.w3.org/2000/svg", element), elementObject));
+							setAttrsFromObject(
+								document.createElementNS("http://www.w3.org/2000/svg", el), elObject));
 				})
 			}
 		}

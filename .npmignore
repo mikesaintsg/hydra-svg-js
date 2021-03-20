@@ -5,6 +5,8 @@ src/
 coverage
 .editorconfig
 .eslintignore
-.eslintrc.js
+.eslintrc.json
+.gitattributes
 .gitignore
 gulpfile.js
+babel.config.js

@@ -17,7 +17,7 @@ const hydra = {
 							getIconArrayOfEls(pkgObject, (iconArray, iconName) =>
 
 								/* TEST-ONLY:START */exports./* TEST-ONLY:END */
-								hydrateEachElInIconArray(iconArray, iconName, importedPkgObject))))))
+								eachElInIconArray(iconArray, iconName, importedPkgObject))))))
 	}
 };
 
@@ -56,7 +56,6 @@ const hydra = {
 /* TEST-ONLY:START */exports.importPkgs = /* TEST-ONLY:END */
 
 	function importPkgs(pkgIconElsObject, pkgs, cb) {
-
 		for (const pkgName in pkgIconElsObject) {
 			cb(pkgIconElsObject[pkgName], pkgs[pkgName])
 		}
@@ -65,23 +64,20 @@ const hydra = {
 /* TEST-ONLY:START */exports.getIconArrayOfEls = /* TEST-ONLY:END */
 
 	function getIconArrayOfEls(pkgObject, cb) {
-
 		for (const iconName in pkgObject) {
 			cb(pkgObject[iconName], iconName)
 		}
 	}
 
-/* TEST-ONLY:START */exports.hydrateEachElInIconArray = /* TEST-ONLY:END */
+/* TEST-ONLY:START */exports.eachElInIconArray = /* TEST-ONLY:END */
 
-	function hydrateEachElInIconArray(iconArray, iconName, importedPkgObject) {
+	function eachElInIconArray(iconArray, iconName, importedPkgObject) {
 		iconArray.forEach(el => {
 
-			/* TEST-ONLY:START */
-			exports./* TEST-ONLY:END */
+			/* TEST-ONLY:START */exports./* TEST-ONLY:END */
 				setAttrsFromObject(el, importedPkgObject[iconName])
 
-			/* TEST-ONLY:START */
-			exports./* TEST-ONLY:END */
+			/* TEST-ONLY:START */exports./* TEST-ONLY:END */
 				generateElAndAppend(el, importedPkgObject[iconName])
 		})
 	}

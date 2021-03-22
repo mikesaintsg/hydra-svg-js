@@ -2,7 +2,7 @@ import stripCode from 'rollup-plugin-strip-code'
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs'
 import babel from '@rollup/plugin-babel'
-import { terser } from 'rollup-plugin-terser'
+import {terser} from 'rollup-plugin-terser'
 import filesize from "rollup-plugin-filesize";
 
 export default {
@@ -20,7 +20,7 @@ export default {
 		}),
 		resolve(),
 		commonjs(),
-		babel({ babelHelpers: 'runtime' }),
+		babel({babelHelpers: 'runtime'}),
 		terser(),
 		filesize()
 	]

@@ -11,7 +11,7 @@ const hydra = {
 					importPkgs(pkgIconElsObject, pkgs, (pkgObject, importedPkgObject) =>
 
 						forIn(pkgObject, (iconArray, iconName) =>
-							forOf(iconArray, el => {
+							forEach(iconArray, el => {
 
 								/* TEST-ONLY:START */exports./* TEST-ONLY:END */
 									setAttrsFromObject(el, importedPkgObject[iconName])
@@ -62,7 +62,7 @@ function forIn(object, cb) {
 	}
 }
 
-function forOf(array, cb) {
+function forEach(array, cb) {
 	for (let i = 0; i < array.length; i++) {
 		cb(array[i]);
 	}

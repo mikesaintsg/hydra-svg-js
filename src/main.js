@@ -1,28 +1,37 @@
 const hydra = {
 	hydrate(pkgs) {
 
-		/* TEST-ONLY:START */exports./* TEST-ONLY:END */
+		/* TEST-ONLY:START */
+		exports./* TEST-ONLY:END */
 			initDocSvgs(filteredElsArray =>
 
 				/* TEST-ONLY:START */exports./* TEST-ONLY:END */
-				createPkgIconElsObject(filteredElsArray, pkgIconElsObject =>
+				createPkgIconElsObject(filteredElsArray, pkgIconElsObject => {
 
-					/* TEST-ONLY:START */exports./* TEST-ONLY:END */
-					importPkgs(pkgIconElsObject, pkgs, (pkgObject, importedPkgObject) =>
+					for (const pkgName in pkgIconElsObject) {
 
-						forIn(pkgObject, (iconArray, iconName) =>
-							forEach(iconArray, el => {
+						for (const iconName in pkgIconElsObject[pkgName]) {
 
-								/* TEST-ONLY:START */exports./* TEST-ONLY:END */
-									setAttrsFromObject(el, importedPkgObject[iconName])
+							const importedPkgIcon = pkgs[pkgName][iconName];
 
-								/* TEST-ONLY:START */exports./* TEST-ONLY:END */
-									generateElAndAppend(el, importedPkgObject[iconName])
-							})))))
+							pkgIconElsObject[pkgName][iconName].forEach(el => {
+
+								/* TEST-ONLY:START */
+								exports./* TEST-ONLY:END */
+									setAttrsFromObject(el, importedPkgIcon)
+
+								/* TEST-ONLY:START */
+								exports./* TEST-ONLY:END */
+									generateElAndAppend(el, importedPkgIcon)
+							})
+						}
+					}
+				}))
 	}
 };
 
-/* TEST-ONLY:START */exports.initDocSvgs = /* TEST-ONLY:END */
+/* TEST-ONLY:START */
+exports.initDocSvgs = /* TEST-ONLY:END */
 
 	function initDocSvgs(cb) {
 		cb(Array.from(document.getElementsByTagName('svg')).filter(el => {
@@ -30,7 +39,8 @@ const hydra = {
 		}))
 	}
 
-/* TEST-ONLY:START */exports.createPkgIconElsObject = /* TEST-ONLY:END */
+/* TEST-ONLY:START */
+exports.createPkgIconElsObject = /* TEST-ONLY:END */
 
 	function createPkgIconElsObject(elsArray, cb) {
 		const pkgIconElsObject = {};
@@ -48,27 +58,8 @@ const hydra = {
 		cb(pkgIconElsObject)
 	}
 
-/* TEST-ONLY:START */exports.importPkgs = /* TEST-ONLY:END */
-
-	function importPkgs(pkgIconElsObject, pkgs, cb) {
-		for (const pkgName in pkgIconElsObject) {
-			cb(pkgIconElsObject[pkgName], pkgs[pkgName])
-		}
-	}
-
-function forIn(object, cb) {
-	for (const key in object) {
-		cb(object[key], key)
-	}
-}
-
-function forEach(array, cb) {
-	for (let i = 0; i < array.length; i++) {
-		cb(array[i]);
-	}
-}
-
-/* TEST-ONLY:START */exports.setAttrsFromObject = /* TEST-ONLY:END */
+/* TEST-ONLY:START */
+exports.setAttrsFromObject = /* TEST-ONLY:END */
 
 	function setAttrsFromObject(el, object) {
 		for (const attribute in object) {
@@ -86,7 +77,8 @@ function forEach(array, cb) {
 		return el;
 	}
 
-/* TEST-ONLY:START */exports.generateElAndAppend = /* TEST-ONLY:END */
+/* TEST-ONLY:START */
+exports.generateElAndAppend = /* TEST-ONLY:END */
 
 	function generateElAndAppend(svg, iconObject) {
 

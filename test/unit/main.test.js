@@ -4,8 +4,8 @@ const hydra = require("../../src/main.js");
 
 testCase()
 generateDom(`
-<svg pkg="heroicons" icon="academicCap"></svg>
-<svg pkg="fontawesome" icon="atom"></svg>`)
+<svg pkg="heroicons" icon="academicCap" id="target"></svg>
+<svg pkg="fontawesome" icon="atom" id="nottarget"></svg>`)
 
 
 describe("hydra", function () {
@@ -14,5 +14,8 @@ describe("hydra", function () {
 			'fontawesome': require('../packs/fontawesome.js'),
 			'heroicons': require('../packs/heroicons.js')
 		})
+
+document.getElementById('target').setAttribute('icon', 'something')
+
 	})
 })

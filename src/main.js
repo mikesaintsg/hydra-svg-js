@@ -42,6 +42,14 @@ const hydra = {
 	}
 };
 
+const initDocSvgs = function (cb) {
+
+	cb(Array.from(document.getElementsByTagName('svg')).filter(el => {
+
+		if (el.hasAttribute('pkg') && el.hasAttribute('icon')) return el
+	}))
+}
+
 const attachMutationObserver = function (elsArray, cb) {
 
 	const mutationObserver = new window.MutationObserver((mutations) => {
@@ -75,15 +83,6 @@ const removeOldPkgAttrValues = function (el, importedOldPkg) {
 		}
 	}
 }
-
-const initDocSvgs = function (cb) {
-
-	cb(Array.from(document.getElementsByTagName('svg')).filter(el => {
-
-		if (el.hasAttribute('pkg') && el.hasAttribute('icon')) return el
-	}))
-}
-
 
 const createPkgIconElsObject = function (elsArray, cb) {
 

@@ -3,6 +3,26 @@ const hydra = {
 
 		initDocSvgs(filteredElsArray => {
 
+			createPkgIconElsObject(filteredElsArray, pkgIconElsObject => {
+
+				for (const pkgName in pkgIconElsObject) {
+
+					const pkgObject = pkgIconElsObject[pkgName]
+
+					for (const iconName in pkgObject) {
+
+						const importedPkgIcon = pkgs[pkgName][iconName];
+						const iconElsArray = pkgIconElsObject[pkgName][iconName];
+
+						iconElsArray.forEach(el => {
+
+							setAttrsFromObject(el, importedPkgIcon)
+							generateElAndAppend(el, importedPkgIcon)
+						})
+					}
+				}
+			})
+
 			attachMutationObserver(filteredElsArray, (el, changedAttr, oldValue) => {
 
 				const currentPkg = el.getAttribute('pkg');
@@ -19,24 +39,6 @@ const hydra = {
 
 				setAttrsFromObject(el, importedNewPkg);
 				generateElAndAppend(el, importedNewPkg);
-
-			})
-
-			createPkgIconElsObject(filteredElsArray, pkgIconElsObject => {
-
-				for (const pkgName in pkgIconElsObject) {
-
-					for (const iconName in pkgIconElsObject[pkgName]) {
-
-						const importedPkgIcon = pkgs[pkgName][iconName];
-
-						pkgIconElsObject[pkgName][iconName].forEach(el => {
-
-							setAttrsFromObject(el, importedPkgIcon)
-							generateElAndAppend(el, importedPkgIcon)
-						})
-					}
-				}
 			})
 		})
 	}

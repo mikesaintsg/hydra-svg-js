@@ -10,7 +10,7 @@ export default {
 	output: {
 		file: 'dist/main.js',
 		format: 'cjs',
-		exports: 'default'
+		exports: 'named'
 	},
 	external: [/@babel\/runtime/],
 	plugins: [

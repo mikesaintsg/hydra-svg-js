@@ -1,55 +1,50 @@
-const hydra = {
-	hydrate(pkgs) {
+const filteredElsArray = Array.from(document.getElementsByTagName('svg')).filter(el => {
 
-		initDocSvgs(filteredElsArray => {
+	return el.hasAttribute('pkg') && el.hasAttribute('icon')
+})
 
-			createPkgIconElsObject(filteredElsArray, pkgIconElsObject => {
+exports.hydrate = function (pkgs, cb = f => f) {
+	createPkgIconElsObject(filteredElsArray, pkgIconElsObject => {
 
-				for (const pkgName in pkgIconElsObject) {
+		for (const pkgName in pkgIconElsObject) {
 
-					const pkgObject = pkgIconElsObject[pkgName]
+			const pkgObject = pkgIconElsObject[pkgName]
 
-					for (const iconName in pkgObject) {
+			for (const iconName in pkgObject) {
 
-						const importedPkgIcon = pkgs[pkgName][iconName];
-						const iconElsArray = pkgIconElsObject[pkgName][iconName];
+				const importedPkgIcon = pkgs[pkgName][iconName];
+				const iconElsArray = pkgIconElsObject[pkgName][iconName];
 
-						iconElsArray.forEach(el => {
+				iconElsArray.forEach(el => {
 
-							setAttrsFromObject(el, importedPkgIcon)
-							generateElAndAppend(el, importedPkgIcon)
-						})
-					}
-				}
-			})
+					setAttrsFromObject(el, importedPkgIcon)
+					generateElAndAppend(el, importedPkgIcon)
+				})
+			}
+		}
+	})
 
-			attachMutationObserver(filteredElsArray, (el, changedAttr, oldValue) => {
+	cb(pkgs)
+}
 
-				const currentPkg = el.getAttribute('pkg');
-				const currentIcon = el.getAttribute('icon');
+exports.observe = function (pkgs) {
+	attachMutationObserver(filteredElsArray, (el, changedAttr, oldValue) => {
 
-				const oldPkg = changedAttr === 'pkg' ? oldValue : currentPkg;
-				const oldIcon = changedAttr === 'icon' ? oldValue : currentIcon;
+		const currentPkg = el.getAttribute('pkg');
+		const currentIcon = el.getAttribute('icon');
 
-				const importedOldPkg = pkgs[oldPkg][oldIcon];
-				const importedNewPkg = pkgs[currentPkg][currentIcon];
+		const oldPkg = changedAttr === 'pkg' ? oldValue : currentPkg;
+		const oldIcon = changedAttr === 'icon' ? oldValue : currentIcon;
 
-				removeAllChildNodes(el);
-				removeOldPkgAttrValues(el, importedOldPkg);
+		const importedOldPkg = pkgs[oldPkg][oldIcon];
+		const importedNewPkg = pkgs[currentPkg][currentIcon];
 
-				setAttrsFromObject(el, importedNewPkg);
-				generateElAndAppend(el, importedNewPkg);
-			})
-		})
-	}
-};
+		removeAllChildNodes(el);
+		removeOldPkgAttrValues(el, importedOldPkg);
 
-const initDocSvgs = function (cb) {
-
-	cb(Array.from(document.getElementsByTagName('svg')).filter(el => {
-
-		if (el.hasAttribute('pkg') && el.hasAttribute('icon')) return el
-	}))
+		setAttrsFromObject(el, importedNewPkg);
+		generateElAndAppend(el, importedNewPkg);
+	})
 }
 
 const attachMutationObserver = function (elsArray, cb) {
@@ -141,5 +136,3 @@ const generateElAndAppend = function (svg, iconObject) {
 
 	return svg;
 }
-
-module.exports = hydra;

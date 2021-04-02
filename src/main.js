@@ -3,7 +3,10 @@ const filteredElsArray = Array.from(document.getElementsByTagName('svg')).filter
 	return el.hasAttribute('pkg') && el.hasAttribute('icon')
 })
 
-export const hydrate = function (pkgs, cb = f => f) {
+export const hydrate = function (pkgs, hooks = {before: null, after: null}) {
+
+	if(hooks.before) ifArrayFuncHook(hooks.before, {pkgs, filteredElsArray})
+
 	createPkgIconElsObject(filteredElsArray, pkgIconElsObject => {
 
 		for (const pkgName in pkgIconElsObject) {
@@ -24,10 +27,19 @@ export const hydrate = function (pkgs, cb = f => f) {
 		}
 	})
 
-	cb(pkgs)
+	if(hooks.after) ifArrayFuncHook(hooks.after, {pkgs, filteredElsArray})
 }
 
-export const observe = function (pkgs) {
+const ifArray = function (item, ifso, ifnot = f => f) {
+	if (Array.isArray(item)) item.forEach(ifso)
+	else ifnot(item, ifso)
+}
+
+const ifArrayFuncHook = function(items, ...args){
+	ifArray(items, ifso => ifso(...args), (item, ifnot) => ifnot(item))
+}
+
+export const observe = function (args) {
 	attachMutationObserver(filteredElsArray, (el, changedAttr, oldValue) => {
 
 		const currentPkg = el.getAttribute('pkg');
@@ -36,8 +48,8 @@ export const observe = function (pkgs) {
 		const oldPkg = changedAttr === 'pkg' ? oldValue : currentPkg;
 		const oldIcon = changedAttr === 'icon' ? oldValue : currentIcon;
 
-		const importedOldPkg = pkgs[oldPkg][oldIcon];
-		const importedNewPkg = pkgs[currentPkg][currentIcon];
+		const importedOldPkg = args.pkgs[oldPkg][oldIcon];
+		const importedNewPkg = args.pkgs[currentPkg][currentIcon];
 
 		removeAllChildNodes(el);
 		removeOldPkgAttrValues(el, importedOldPkg);

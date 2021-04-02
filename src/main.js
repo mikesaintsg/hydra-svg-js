@@ -3,7 +3,7 @@ const filteredElsArray = Array.from(document.getElementsByTagName('svg')).filter
 	return el.hasAttribute('pkg') && el.hasAttribute('icon')
 })
 
-exports.hydrate = function (pkgs, cb = f => f) {
+export const hydrate = function (pkgs, cb = f => f) {
 	createPkgIconElsObject(filteredElsArray, pkgIconElsObject => {
 
 		for (const pkgName in pkgIconElsObject) {
@@ -27,7 +27,7 @@ exports.hydrate = function (pkgs, cb = f => f) {
 	cb(pkgs)
 }
 
-exports.observe = function (pkgs) {
+export const observe = function (pkgs) {
 	attachMutationObserver(filteredElsArray, (el, changedAttr, oldValue) => {
 
 		const currentPkg = el.getAttribute('pkg');

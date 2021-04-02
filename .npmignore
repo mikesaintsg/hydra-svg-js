@@ -1,5 +1,6 @@
-test/
+config/
 src/
+test/
 .idea
 .nyc_output
 coverage
@@ -8,5 +9,4 @@ coverage
 .eslintrc.json
 .gitattributes
 .gitignore
-babel.config.js
-rollup.config.js
+README.md

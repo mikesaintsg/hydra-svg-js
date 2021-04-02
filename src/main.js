@@ -3,7 +3,7 @@ const filteredElsArray = Array.from(document.getElementsByTagName('svg')).filter
 	return el.hasAttribute('pkg') && el.hasAttribute('icon')
 })
 
-export const hydrate = function (pkgs, hooks = {before: null, after: null}) {
+export const hydrate = function (pkgs, hooks = {before: null, after: null, observe: null, last: null}) {
 
 	if(hooks.before) ifArrayFuncHook(hooks.before, {pkgs, filteredElsArray})
 
@@ -28,6 +28,10 @@ export const hydrate = function (pkgs, hooks = {before: null, after: null}) {
 	})
 
 	if(hooks.after) ifArrayFuncHook(hooks.after, {pkgs, filteredElsArray})
+
+	if(hooks.observe) observe({pkgs, filteredElsArray})
+
+	if(hooks.last) ifArrayFuncHook(hooks.last, {pkgs, filteredElsArray})
 }
 
 const ifArray = function (item, ifso, ifnot = f => f) {

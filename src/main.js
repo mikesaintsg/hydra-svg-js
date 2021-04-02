@@ -107,7 +107,9 @@ const setAttrsFromObject = function (el, object) {
 
 		if (!Array.isArray(values)) {
 
-			if (el.getAttribute(attribute)) values = values + ' ' + el.getAttribute(attribute);
+			const currentAttr = el.getAttribute(attribute)
+
+			if (currentAttr) values = values + ' ' + currentAttr;
 
 			el.setAttribute(attribute, values);
 		}

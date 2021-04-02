@@ -9,7 +9,8 @@ module.exports = {
 		path: path.resolve(__dirname, '../dist'),
 		filename: 'main.js',
 		library: {
-			type: 'commonjs2',
+			name: 'hydra-svg-js',
+			type: 'umd',
 		},
 	},
 	module: {

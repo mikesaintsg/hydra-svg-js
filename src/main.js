@@ -55,7 +55,7 @@ export const observe = function (args) {
 		const importedOldPkg = args.pkgs[oldPkg][oldIcon];
 		const importedNewPkg = args.pkgs[currentPkg][currentIcon];
 
-		removeAllChildNodes(el);
+		removeAllChildren(el);
 		removeOldPkgAttrValues(el, importedOldPkg);
 
 		setAttrsFromObject(el, importedNewPkg);
@@ -76,8 +76,8 @@ const attachMutationObserver = function (elsArray, cb) {
 	elsArray.forEach(el => mutationObserver.observe(el, {attributeFilter: ['pkg', 'icon'], attributeOldValue: true}))
 }
 
-const removeAllChildNodes = function (el) {
-	Array.from(el.childNodes).forEach(child => el.removeChild(child))
+const removeAllChildren = function (el) {
+	Array.from(el.children).forEach(child => el.removeChild(child))
 }
 
 const removeOldPkgAttrValues = function (el, importedOldPkg) {

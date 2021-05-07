@@ -1,156 +1,152 @@
-const filteredElsArray = Array.from(document.getElementsByTagName('svg')).filter(el => {
+const svgEls = document.getElementsByTagName('svg');
 
-	return el.hasAttribute('pkg') && el.hasAttribute('icon')
-})
+const svgElsArray = Array.from(svgEls);
 
-export const hydrate = function (pkgs, hooks = {before: null, after: null, observe: null, last: null}) {
+const svgElsArrayFiltered = svgElsArray.filter(el => el.hasAttribute('pkg') && el.hasAttribute('icon'));
 
-	if(hooks.before) ifArrayFuncHook(hooks.before, {pkgs, filteredElsArray})
+const svgElsArrayFilteredLength = svgElsArrayFiltered.length;
 
-	createPkgIconElsObject(filteredElsArray, pkgIconElsObject => {
+export const hydrate = async function (pkgs, hooks = {before: null, after: null, observe: null, last: null}) {
 
-		for (const pkgName in pkgIconElsObject) {
+	if(hooks.before) ifFuncArrayHook(hooks.before, {pkgs, svgElsArrayFiltered})
 
-			const pkgObject = pkgIconElsObject[pkgName]
+	for (let i = 0; i < svgElsArrayFilteredLength; i++) {
+		const el = svgElsArrayFiltered[i]
 
-			for (const iconName in pkgObject) {
+		const pkgName = el.getAttribute('pkg');
+		const iconName = el.getAttribute('icon');
 
-				const importedPkgIcon = pkgs[pkgName][iconName];
-				const iconElsArray = pkgIconElsObject[pkgName][iconName];
+		const importedPkgIcon = (await pkgs[pkgName])[iconName]
 
-				iconElsArray.forEach(el => {
+		setAttrsFromObject(el, importedPkgIcon)
+		generateElAndAppend(el, importedPkgIcon)
+	}
 
-					setAttrsFromObject(el, importedPkgIcon)
-					generateElAndAppend(el, importedPkgIcon)
-				})
-			}
+	if(hooks.after) ifFuncArrayHook(hooks.after, {pkgs, svgElsArrayFiltered})
+
+	if(hooks.observe) await observe(pkgs)
+
+	if(hooks.last) ifFuncArrayHook(hooks.last, {pkgs, svgElsArrayFiltered})
+};
+
+const ifArray = function (items, ifso, ifnot) {
+	if (Array.isArray(items)) {
+		const itemsLength = items.length
+
+		for (let i = 0; i < itemsLength; i++) {
+			const item = items[i]
+
+			ifso(item)
 		}
-	})
+	} else {
+		ifnot(items, ifso)
+	}
+};
 
-	if(hooks.after) ifArrayFuncHook(hooks.after, {pkgs, filteredElsArray})
+const ifFuncArrayHook = function(items, ...args){
+	const callFunc = function (func) {
+		func(...args)
+	}
 
-	if(hooks.observe) observe({pkgs, filteredElsArray})
+	ifArray(items, callFunc, callFunc)
+};
 
-	if(hooks.last) ifArrayFuncHook(hooks.last, {pkgs, filteredElsArray})
-}
+export const observe = function (pkgs) {
 
-const ifArray = function (item, ifso, ifnot = f => f) {
-	if (Array.isArray(item)) item.forEach(ifso)
-	else ifnot(item, ifso)
-}
-
-const ifArrayFuncHook = function(items, ...args){
-	ifArray(items, ifso => ifso(...args), (item, ifnot) => ifnot(item))
-}
-
-export const observe = function (args) {
-	attachMutationObserver(filteredElsArray, (el, changedAttr, oldValue) => {
-
-		const currentPkg = el.getAttribute('pkg');
-		const currentIcon = el.getAttribute('icon');
-
-		const oldPkg = changedAttr === 'pkg' ? oldValue : currentPkg;
-		const oldIcon = changedAttr === 'icon' ? oldValue : currentIcon;
-
-		const importedOldPkg = args.pkgs[oldPkg][oldIcon];
-		const importedNewPkg = args.pkgs[currentPkg][currentIcon];
-
-		removeAllChildren(el);
-		removeOldPkgAttrValues(el, importedOldPkg);
-
-		setAttrsFromObject(el, importedNewPkg);
-		generateElAndAppend(el, importedNewPkg);
-	})
-}
-
-const attachMutationObserver = function (elsArray, cb) {
-
-	const mutationObserver = new window.MutationObserver((mutations) => {
+	const mutationObserver = new window.MutationObserver(async (mutations) => {
 
 		for (const mutation of mutations) {
+			const el = mutation.target;
+			const changedAttr = mutation.attributeName;
+			const oldValue = mutation.oldValue;
 
-			cb(mutation.target, mutation.attributeName, mutation.oldValue)
+			const currentPkg = el.getAttribute('pkg');
+			const currentIcon = el.getAttribute('icon');
+
+			const oldPkg = changedAttr === 'pkg' ? oldValue : currentPkg;
+			const oldIcon = changedAttr === 'icon' ? oldValue : currentIcon;
+
+			const importedOldPkg = (await pkgs[oldPkg])[oldIcon];
+			const importedNewPkg = (await pkgs[currentPkg])[currentIcon];
+
+			removeAllChildren(el);
+			removeOldPkgAttrValues(el, importedOldPkg);
+
+			setAttrsFromObject(el, importedNewPkg);
+			generateElAndAppend(el, importedNewPkg);
 		}
 	})
 
-	elsArray.forEach(el => mutationObserver.observe(el, {attributeFilter: ['pkg', 'icon'], attributeOldValue: true}))
-}
+	for (let i = 0; i < svgElsArrayFilteredLength; i++) {
+		const el = svgElsArrayFiltered[i]
 
-const removeAllChildren = function (el) {
-	Array.from(el.children).forEach(child => el.removeChild(child))
-}
-
-const removeOldPkgAttrValues = function (el, importedOldPkg) {
-	for (const attribute in importedOldPkg) {
-
-		const values = importedOldPkg[attribute];
-
-		if (!Array.isArray(values)) {
-
-			const currentAttr = el.getAttribute(attribute)
-			const replacement = currentAttr.replace(values, "")
-
-			currentAttr.replace(values, "").trim() === ""
-				? el.removeAttribute(attribute)
-				: el.setAttribute(attribute, replacement)
-		}
+		mutationObserver.observe(el, {attributeFilter: ['pkg', 'icon'], attributeOldValue: true})
 	}
-}
-
-const createPkgIconElsObject = function (elsArray, cb) {
-
-	const pkgIconElsObject = {};
-
-	elsArray.forEach(el => {
-
-		const elPkg = el.getAttribute('pkg');
-		const elIcon = el.getAttribute('icon');
-
-		if (!pkgIconElsObject[elPkg]) pkgIconElsObject[elPkg] = {};
-
-		if (pkgIconElsObject[elPkg][elIcon]) pkgIconElsObject[elPkg][elIcon].push(el)
-		else pkgIconElsObject[elPkg][elIcon] = [el];
-	})
-
-	cb(pkgIconElsObject)
-}
-
+};
 
 const setAttrsFromObject = function (el, object) {
-	for (const attribute in object) {
 
+	for (const attribute in object) {
 		let values = object[attribute];
 
 		if (!Array.isArray(values)) {
-
 			const currentAttr = el.getAttribute(attribute)
 
-			if (currentAttr) values = values + ' ' + currentAttr;
+			if (currentAttr) {
+				values = values + ' ' + currentAttr;
+			}
 
 			el.setAttribute(attribute, values);
 		}
 	}
-
-	return el;
-}
-
+};
 
 const generateElAndAppend = function (svg, iconObject) {
 
 	for (const el in iconObject) {
-
 		const values = iconObject[el];
 
 		if (Array.isArray(values)) {
+			const valuesLength = values.length
 
-			values.forEach((elObject) => {
+			for (let i = 0; i < valuesLength; i++) {
+				const elObject = values[i]
 
-				svg.appendChild(
-					setAttrsFromObject(document.createElementNS("http://www.w3.org/2000/svg", el),
-						elObject));
-			})
+				const createdElement = document.createElementNS("http://www.w3.org/2000/svg", el)
+
+				setAttrsFromObject(createdElement, elObject)
+
+				svg.appendChild(createdElement);
+			}
 		}
 	}
+};
 
-	return svg;
-}
+const removeAllChildren = function (el) {
+	const children = Array.from(el.children);
+	const childrenLength = children.length
+
+	for (let i = 0; i < childrenLength; i++) {
+		const child = children[i];
+
+		child.remove()
+	}
+};
+
+const removeOldPkgAttrValues = function (el, importedOldPkg) {
+
+	for (const attribute in importedOldPkg) {
+		const values = importedOldPkg[attribute];
+
+		if (!Array.isArray(values)) {
+			const currentAttr = el.getAttribute(attribute)
+			const replacement = currentAttr.replace(values, "")
+
+			if(currentAttr.replace(values, "").trim() === "") {
+				el.removeAttribute(attribute)
+			} else {
+				el.setAttribute(attribute, replacement)
+			}
+		}
+	}
+};

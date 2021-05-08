@@ -1,6 +1,6 @@
 {
 	"name": "hydra-svg-js",
-	"version": "0.0.20",
+	"version": "0.0.21",
 	"description": "Hydrate SVG tags with icons from your favorite libraries",
 	"main": "dist/main.js",
 	"files": [

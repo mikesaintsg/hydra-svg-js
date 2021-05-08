@@ -20,7 +20,7 @@ for (let i = 0; i < initSvgElsLength; i++) {
 
 const svgCacheLength = svgCache.length
 
-exports.hydrate = async function (pkgs) {
+exports[`hydrate`] = async function (pkgs) {
 
 	for (let i = 0; i < svgCacheLength; i++) {
 		const cached = svgCache[i]
@@ -33,7 +33,7 @@ exports.hydrate = async function (pkgs) {
 	}
 };
 
-exports.observe = function (pkgs) {
+exports[`observe`] = function (pkgs) {
 
 	const mutationObserver = new window.MutationObserver(async (mutations) => {
 

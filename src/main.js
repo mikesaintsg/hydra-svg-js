@@ -18,11 +18,9 @@ for (let i = 0; i < initSvgElsLength; i++) {
 	}
 }
 
-export const hydrate = async function (pkgs, hooks = {before: null, after: null, observe: null, last: null}) {
+const svgCacheLength = svgCache.length
 
-	if (hooks.before) ifFuncArrayHook(hooks.before, {pkgs, svgCache})
-
-	const svgCacheLength = svgCache.length
+exports.hydrate = async function (pkgs) {
 
 	for (let i = 0; i < svgCacheLength; i++) {
 		const cached = svgCache[i]
@@ -33,37 +31,9 @@ export const hydrate = async function (pkgs, hooks = {before: null, after: null,
 		setAttrsFromObject(el, importedPkgIcon)
 		generateElAndAppend(el, importedPkgIcon)
 	}
-
-	if (hooks.after) ifFuncArrayHook(hooks.after, {pkgs, svgCache})
-
-	if (hooks.observe) await observe(pkgs)
-
-	if (hooks.last) ifFuncArrayHook(hooks.last, {pkgs, svgCache})
 };
 
-const ifArray = function (items, ifso, ifnot) {
-	if (Array.isArray(items)) {
-		const itemsLength = items.length
-
-		for (let i = 0; i < itemsLength; i++) {
-			const item = items[i]
-
-			ifso(item)
-		}
-	} else {
-		ifnot(items, ifso)
-	}
-};
-
-const ifFuncArrayHook = function (items, ...args) {
-	const callFunc = function (func) {
-		func(...args)
-	}
-
-	ifArray(items, callFunc, callFunc)
-};
-
-export const observe = function (pkgs) {
+exports.observe = function (pkgs) {
 
 	const mutationObserver = new window.MutationObserver(async (mutations) => {
 
@@ -88,8 +58,6 @@ export const observe = function (pkgs) {
 			generateElAndAppend(el, importedNewPkg)
 		}
 	})
-
-	const svgCacheLength = svgCache.length
 
 	for (let i = 0; i < svgCacheLength; i++) {
 		const el = svgCache[i].el

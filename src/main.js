@@ -1,32 +1,44 @@
-const svgEls = document.getElementsByTagName('svg');
+const svgCache = [];
 
-const svgElsArray = Array.from(svgEls);
+const initSvgEls = document.getElementsByTagName('svg');
 
-const svgElsArrayFiltered = svgElsArray.filter(el => el.hasAttribute('pkg') && el.hasAttribute('icon'));
+const initSvgElsLength = initSvgEls.length;
 
-const svgElsArrayFilteredLength = svgElsArrayFiltered.length;
+for (let i = 0; i < initSvgElsLength; i++) {
+	const el = initSvgEls[i];
+
+	const hasPkg = el.hasAttribute('pkg');
+	const hasIcon = el.hasAttribute('icon');
+
+	if (hasPkg && hasIcon) {
+		const pkg = el.getAttribute('pkg')
+		const icon = el.getAttribute('icon')
+
+		svgCache.push({el, pkg, icon});
+	}
+}
 
 export const hydrate = async function (pkgs, hooks = {before: null, after: null, observe: null, last: null}) {
 
-	if(hooks.before) ifFuncArrayHook(hooks.before, {pkgs, svgElsArrayFiltered})
+	if (hooks.before) ifFuncArrayHook(hooks.before, {pkgs, svgCache})
 
-	for (let i = 0; i < svgElsArrayFilteredLength; i++) {
-		const el = svgElsArrayFiltered[i]
+	const svgCacheLength = svgCache.length
 
-		const pkgName = el.getAttribute('pkg');
-		const iconName = el.getAttribute('icon');
+	for (let i = 0; i < svgCacheLength; i++) {
+		const cached = svgCache[i]
+		const el = cached.el;
 
-		const importedPkgIcon = (await pkgs[pkgName])[iconName]
+		const importedPkgIcon = (await pkgs[cached.pkg])[cached.icon]
 
 		setAttrsFromObject(el, importedPkgIcon)
 		generateElAndAppend(el, importedPkgIcon)
 	}
 
-	if(hooks.after) ifFuncArrayHook(hooks.after, {pkgs, svgElsArrayFiltered})
+	if (hooks.after) ifFuncArrayHook(hooks.after, {pkgs, svgCache})
 
-	if(hooks.observe) await observe(pkgs)
+	if (hooks.observe) await observe(pkgs)
 
-	if(hooks.last) ifFuncArrayHook(hooks.last, {pkgs, svgElsArrayFiltered})
+	if (hooks.last) ifFuncArrayHook(hooks.last, {pkgs, svgCache})
 };
 
 const ifArray = function (items, ifso, ifnot) {
@@ -43,7 +55,7 @@ const ifArray = function (items, ifso, ifnot) {
 	}
 };
 
-const ifFuncArrayHook = function(items, ...args){
+const ifFuncArrayHook = function (items, ...args) {
 	const callFunc = function (func) {
 		func(...args)
 	}
@@ -72,13 +84,15 @@ export const observe = function (pkgs) {
 			removeAllChildren(el);
 			removeOldPkgAttrValues(el, importedOldPkg);
 
-			setAttrsFromObject(el, importedNewPkg);
-			generateElAndAppend(el, importedNewPkg);
+			setAttrsFromObject(el, importedNewPkg)
+			generateElAndAppend(el, importedNewPkg)
 		}
 	})
 
-	for (let i = 0; i < svgElsArrayFilteredLength; i++) {
-		const el = svgElsArrayFiltered[i]
+	const svgCacheLength = svgCache.length
+
+	for (let i = 0; i < svgCacheLength; i++) {
+		const el = svgCache[i].el
 
 		mutationObserver.observe(el, {attributeFilter: ['pkg', 'icon'], attributeOldValue: true})
 	}
@@ -134,15 +148,14 @@ const removeAllChildren = function (el) {
 };
 
 const removeOldPkgAttrValues = function (el, importedOldPkg) {
-
 	for (const attribute in importedOldPkg) {
-		const values = importedOldPkg[attribute];
+		const oldValues = importedOldPkg[attribute];
 
-		if (!Array.isArray(values)) {
+		if (!Array.isArray(oldValues)) {
 			const currentAttr = el.getAttribute(attribute)
-			const replacement = currentAttr.replace(values, "")
+			const replacement = currentAttr.replace(oldValues, "")
 
-			if(currentAttr.replace(values, "").trim() === "") {
+			if (currentAttr.replace(oldValues, "").trim() === "") {
 				el.removeAttribute(attribute)
 			} else {
 				el.setAttribute(attribute, replacement)

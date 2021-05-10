@@ -7,13 +7,10 @@ const svgListLength = svgList.length;
 for (let i = 0; i < svgListLength; i++) {
 	const svg = svgList[i];
 
-	const hasPkg = svg.hasAttribute('pkg');
-	const hasIcon = svg.hasAttribute('icon');
+	const pkg = svg.getAttribute('pkg');
+	const icon = svg.getAttribute('icon');
 
-	if (hasPkg && hasIcon) {
-		const pkg = svg.getAttribute('pkg')
-		const icon = svg.getAttribute('icon')
-
+	if (pkg && icon) {
 		svgCache.push({svg, pkg, icon});
 	}
 }

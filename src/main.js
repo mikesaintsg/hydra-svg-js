@@ -15,18 +15,18 @@ for (let i = 0; i < svgListLength; i++) {
 	}
 }
 
-const svgCacheLength = svgCache.length
+const svgCacheLength = svgCache.length;
 
 exports[`hydrate`] = async function (pkgs) {
 
 	for (let i = 0; i < svgCacheLength; i++) {
-		const cached = svgCache[i]
+		const cached = svgCache[i];
 		const svg = cached.svg;
 
-		const importedPkgIcon = (await pkgs[cached.pkg])[cached.icon]
+		const importedPkgIcon = (await pkgs[cached.pkg])[cached.icon];
 
-		setAttributesFromObject(svg, importedPkgIcon)
-		generateElementAndAppend(svg, importedPkgIcon)
+		setAttributesFromObject(svg, importedPkgIcon);
+		generateElementAndAppend(svg, importedPkgIcon);
 	}
 };
 
@@ -51,15 +51,15 @@ exports[`observe`] = function (pkgs) {
 			removeAllChildren(svg);
 			removeOldPkgAttributeValues(svg, importedOldPkg);
 
-			setAttributesFromObject(svg, importedNewPkg)
-			generateElementAndAppend(svg, importedNewPkg)
+			setAttributesFromObject(svg, importedNewPkg);
+			generateElementAndAppend(svg, importedNewPkg);
 		}
 	})
 
 	for (let i = 0; i < svgCacheLength; i++) {
-		const svg = svgCache[i].svg
+		const svg = svgCache[i].svg;
 
-		mutationObserver.observe(svg, {attributeFilter: ['pkg', 'icon'], attributeOldValue: true})
+		mutationObserver.observe(svg, {attributeFilter: ['pkg', 'icon'], attributeOldValue: true});
 	}
 };
 
@@ -69,7 +69,7 @@ const setAttributesFromObject = function (element, object) {
 		let values = object[attribute];
 
 		if (!Array.isArray(values)) {
-			const currentAttr = element.getAttribute(attribute)
+			const currentAttr = element.getAttribute(attribute);
 
 			if (currentAttr) {
 				values = values + ' ' + currentAttr;
@@ -86,14 +86,14 @@ const generateElementAndAppend = function (svg, iconObject) {
 		const elementArray = iconObject[elementName];
 
 		if (Array.isArray(elementArray)) {
-			const valuesLength = elementArray.length
+			const valuesLength = elementArray.length;
 
 			for (let i = 0; i < valuesLength; i++) {
-				const elementObject = elementArray[i]
+				const elementObject = elementArray[i];
 
-				const createdElement = document.createElementNS("http://www.w3.org/2000/svg", elementName)
+				const createdElement = document.createElementNS("http://www.w3.org/2000/svg", elementName);
 
-				setAttributesFromObject(createdElement, elementObject)
+				setAttributesFromObject(createdElement, elementObject);
 
 				svg.appendChild(createdElement);
 			}
@@ -103,12 +103,12 @@ const generateElementAndAppend = function (svg, iconObject) {
 
 const removeAllChildren = function (svg) {
 	const children = Array.from(svg.children);
-	const childrenLength = children.length
+	const childrenLength = children.length;
 
 	for (let i = 0; i < childrenLength; i++) {
 		const child = children[i];
 
-		child.remove()
+		child.remove();
 	}
 };
 
@@ -117,13 +117,13 @@ const removeOldPkgAttributeValues = function (svg, importedOldPkg) {
 		const oldValues = importedOldPkg[attribute];
 
 		if (!Array.isArray(oldValues)) {
-			const currentAttr = svg.getAttribute(attribute)
-			const replacement = currentAttr.replace(oldValues, "")
+			const currentAttr = svg.getAttribute(attribute);
+			const replacement = currentAttr.replace(oldValues, "");
 
 			if (currentAttr.replace(oldValues, "").trim() === "") {
-				svg.removeAttribute(attribute)
+				svg.removeAttribute(attribute);
 			} else {
-				svg.setAttribute(attribute, replacement)
+				svg.setAttribute(attribute, replacement);
 			}
 		}
 	}

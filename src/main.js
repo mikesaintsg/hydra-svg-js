@@ -1,20 +1,20 @@
 const svgCache = [];
 
-const initSvgEls = document.getElementsByTagName('svg');
+const svgList = document.getElementsByTagName('svg');
 
-const initSvgElsLength = initSvgEls.length;
+const svgListLength = svgList.length;
 
-for (let i = 0; i < initSvgElsLength; i++) {
-	const el = initSvgEls[i];
+for (let i = 0; i < svgListLength; i++) {
+	const svg = svgList[i];
 
-	const hasPkg = el.hasAttribute('pkg');
-	const hasIcon = el.hasAttribute('icon');
+	const hasPkg = svg.hasAttribute('pkg');
+	const hasIcon = svg.hasAttribute('icon');
 
 	if (hasPkg && hasIcon) {
-		const pkg = el.getAttribute('pkg')
-		const icon = el.getAttribute('icon')
+		const pkg = svg.getAttribute('pkg')
+		const icon = svg.getAttribute('icon')
 
-		svgCache.push({el, pkg, icon});
+		svgCache.push({svg, pkg, icon});
 	}
 }
 
@@ -24,12 +24,12 @@ exports[`hydrate`] = async function (pkgs) {
 
 	for (let i = 0; i < svgCacheLength; i++) {
 		const cached = svgCache[i]
-		const el = cached.el;
+		const svg = cached.svg;
 
 		const importedPkgIcon = (await pkgs[cached.pkg])[cached.icon]
 
-		setAttrsFromObject(el, importedPkgIcon)
-		generateElAndAppend(el, importedPkgIcon)
+		setAttributesFromObject(svg, importedPkgIcon)
+		generateElementAndAppend(svg, importedPkgIcon)
 	}
 };
 
@@ -38,12 +38,12 @@ exports[`observe`] = function (pkgs) {
 	const mutationObserver = new window.MutationObserver(async (mutations) => {
 
 		for (const mutation of mutations) {
-			const el = mutation.target;
+			const svg = mutation.target;
 			const changedAttr = mutation.attributeName;
 			const oldValue = mutation.oldValue;
 
-			const currentPkg = el.getAttribute('pkg');
-			const currentIcon = el.getAttribute('icon');
+			const currentPkg = svg.getAttribute('pkg');
+			const currentIcon = svg.getAttribute('icon');
 
 			const oldPkg = changedAttr === 'pkg' ? oldValue : currentPkg;
 			const oldIcon = changedAttr === 'icon' ? oldValue : currentIcon;
@@ -51,52 +51,52 @@ exports[`observe`] = function (pkgs) {
 			const importedOldPkg = (await pkgs[oldPkg])[oldIcon];
 			const importedNewPkg = (await pkgs[currentPkg])[currentIcon];
 
-			removeAllChildren(el);
-			removeOldPkgAttrValues(el, importedOldPkg);
+			removeAllChildren(svg);
+			removeOldPkgAttributeValues(svg, importedOldPkg);
 
-			setAttrsFromObject(el, importedNewPkg)
-			generateElAndAppend(el, importedNewPkg)
+			setAttributesFromObject(svg, importedNewPkg)
+			generateElementAndAppend(svg, importedNewPkg)
 		}
 	})
 
 	for (let i = 0; i < svgCacheLength; i++) {
-		const el = svgCache[i].el
+		const svg = svgCache[i].svg
 
-		mutationObserver.observe(el, {attributeFilter: ['pkg', 'icon'], attributeOldValue: true})
+		mutationObserver.observe(svg, {attributeFilter: ['pkg', 'icon'], attributeOldValue: true})
 	}
 };
 
-const setAttrsFromObject = function (el, object) {
+const setAttributesFromObject = function (element, object) {
 
 	for (const attribute in object) {
 		let values = object[attribute];
 
 		if (!Array.isArray(values)) {
-			const currentAttr = el.getAttribute(attribute)
+			const currentAttr = element.getAttribute(attribute)
 
 			if (currentAttr) {
 				values = values + ' ' + currentAttr;
 			}
 
-			el.setAttribute(attribute, values);
+			element.setAttribute(attribute, values);
 		}
 	}
 };
 
-const generateElAndAppend = function (svg, iconObject) {
+const generateElementAndAppend = function (svg, iconObject) {
 
-	for (const el in iconObject) {
-		const values = iconObject[el];
+	for (const elementName in iconObject) {
+		const elementArray = iconObject[elementName];
 
-		if (Array.isArray(values)) {
-			const valuesLength = values.length
+		if (Array.isArray(elementArray)) {
+			const valuesLength = elementArray.length
 
 			for (let i = 0; i < valuesLength; i++) {
-				const elObject = values[i]
+				const elementObject = elementArray[i]
 
-				const createdElement = document.createElementNS("http://www.w3.org/2000/svg", el)
+				const createdElement = document.createElementNS("http://www.w3.org/2000/svg", elementName)
 
-				setAttrsFromObject(createdElement, elObject)
+				setAttributesFromObject(createdElement, elementObject)
 
 				svg.appendChild(createdElement);
 			}
@@ -104,8 +104,8 @@ const generateElAndAppend = function (svg, iconObject) {
 	}
 };
 
-const removeAllChildren = function (el) {
-	const children = Array.from(el.children);
+const removeAllChildren = function (svg) {
+	const children = Array.from(svg.children);
 	const childrenLength = children.length
 
 	for (let i = 0; i < childrenLength; i++) {
@@ -115,18 +115,18 @@ const removeAllChildren = function (el) {
 	}
 };
 
-const removeOldPkgAttrValues = function (el, importedOldPkg) {
+const removeOldPkgAttributeValues = function (svg, importedOldPkg) {
 	for (const attribute in importedOldPkg) {
 		const oldValues = importedOldPkg[attribute];
 
 		if (!Array.isArray(oldValues)) {
-			const currentAttr = el.getAttribute(attribute)
+			const currentAttr = svg.getAttribute(attribute)
 			const replacement = currentAttr.replace(oldValues, "")
 
 			if (currentAttr.replace(oldValues, "").trim() === "") {
-				el.removeAttribute(attribute)
+				svg.removeAttribute(attribute)
 			} else {
-				el.setAttribute(attribute, replacement)
+				svg.setAttribute(attribute, replacement)
 			}
 		}
 	}

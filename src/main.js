@@ -17,20 +17,22 @@ for (let i = 0; i < svgListLength; i++) {
 
 const svgCacheLength = svgCache.length;
 
-exports[`hydrate`] = async function (pkgs) {
+exports.hydrate = async function (pkgs) {
 
 	for (let i = 0; i < svgCacheLength; i++) {
 		const cached = svgCache[i];
-		const svg = cached.svg;
+		const svgElement = cached.svg;
 
-		const importedPkgIcon = (await pkgs[cached.pkg])[cached.icon];
+		const importedPkg = await pkgs[cached.pkg]
 
-		setAttributesFromObject(svg, importedPkgIcon);
-		generateElementAndAppend(svg, importedPkgIcon);
+		const importedPkgIcon = importedPkg[cached.icon];
+
+		setAttributesFromObject(svgElement, importedPkgIcon);
+		generateElementAndAppend(svgElement, importedPkgIcon);
 	}
 };
 
-exports[`observe`] = function (pkgs) {
+exports.observe = function (pkgs) {
 
 	const mutationObserver = new window.MutationObserver(async (mutations) => {
 

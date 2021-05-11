@@ -1,38 +1,28 @@
-const svgCache = [];
-
-const svgList = Array.from(document.getElementsByTagName('svg'));
+const svgList = Array.from(document.getElementsByTagName('svg'))
+	.filter(element => element.hasAttribute('pkg') && element.hasAttribute('icon'));
 
 const svgListLength = svgList.length;
 
-for (let i = 0; i < svgListLength; i++) {
-	const svg = svgList[i];
+exports.hydrate = async function (pkgs, options = {observe: false}) {
 
-	const pkg = svg.getAttribute('pkg');
-	const icon = svg.getAttribute('icon');
+	for (let i = 0; i < svgListLength; i++) {
+		const svg = svgList[i];
 
-	if (pkg && icon) {
-		svgCache.push({svg, pkg, icon});
+		const pkgName = svg.getAttribute('pkg');
+		const iconName = svg.getAttribute('icon');
+
+		const importedPkg = await pkgs[pkgName];
+
+		const importedPkgIcon = importedPkg[iconName];
+
+		setAttributesFromObject(svg, importedPkgIcon);
+		generateElementAndAppend(svg, importedPkgIcon);
 	}
-}
 
-const svgCacheLength = svgCache.length;
-
-exports.hydrate = async function (pkgs) {
-
-	for (let i = 0; i < svgCacheLength; i++) {
-		const cached = svgCache[i];
-		const svgElement = cached.svg;
-
-		const importedPkg = await pkgs[cached.pkg]
-
-		const importedPkgIcon = importedPkg[cached.icon];
-
-		setAttributesFromObject(svgElement, importedPkgIcon);
-		generateElementAndAppend(svgElement, importedPkgIcon);
-	}
+	if(options.observe) observe(pkgs);
 };
 
-exports.observe = function (pkgs) {
+const observe = function (pkgs) {
 
 	const mutationObserver = new window.MutationObserver(async (mutations) => {
 
@@ -58,8 +48,8 @@ exports.observe = function (pkgs) {
 		}
 	})
 
-	for (let i = 0; i < svgCacheLength; i++) {
-		const svg = svgCache[i].svg;
+	for (let i = 0; i < svgListLength; i++) {
+		const svg = svgList[i];
 
 		mutationObserver.observe(svg, {attributeFilter: ['pkg', 'icon'], attributeOldValue: true});
 	}
@@ -115,6 +105,7 @@ const removeAllChildren = function (svg) {
 };
 
 const removeOldPkgAttributeValues = function (svg, importedOldPkg) {
+
 	for (const attribute in importedOldPkg) {
 		const oldValues = importedOldPkg[attribute];
 

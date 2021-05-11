@@ -1,6 +1,6 @@
 const svgCache = [];
 
-const svgList = document.getElementsByTagName('svg');
+const svgList = Array.from(document.getElementsByTagName('svg'));
 
 const svgListLength = svgList.length;
 

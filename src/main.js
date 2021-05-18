@@ -1,30 +1,24 @@
-const svgList = Array.from(document.getElementsByTagName('svg'))
+const svgArrayFiltered = Array.from(document.getElementsByTagName('svg'))
 	.filter(element => element.hasAttribute('pkg') && element.hasAttribute('icon'));
-
-const svgListLength = svgList.length;
 
 exports.hydrate = async function (pkgs, options = {observe: false}) {
 
-	for (let i = 0; i < svgListLength; i++) {
-		const svg = svgList[i];
-
+	forEach(svgArrayFiltered, svg => {
 		const pkgName = svg.getAttribute('pkg');
 		const iconName = svg.getAttribute('icon');
 
-		const importedPkg = await pkgs[pkgName];
-
-		const importedPkgIcon = importedPkg[iconName];
+		const importedPkgIcon = pkgs[pkgName][iconName];
 
 		setAttributesFromObject(svg, importedPkgIcon);
 		generateElementAndAppend(svg, importedPkgIcon);
-	}
+	})
 
-	if(options.observe) observe(pkgs);
+	if (options.observe) observe(pkgs);
 };
 
 const observe = function (pkgs) {
 
-	const mutationObserver = new window.MutationObserver(async (mutations) => {
+	const mutationObserver = new window.MutationObserver(mutations => {
 
 		for (const mutation of mutations) {
 			const svg = mutation.target;
@@ -37,8 +31,8 @@ const observe = function (pkgs) {
 			const oldPkg = changedAttr === 'pkg' ? oldValue : currentPkg;
 			const oldIcon = changedAttr === 'icon' ? oldValue : currentIcon;
 
-			const importedOldPkg = (await pkgs[oldPkg])[oldIcon];
-			const importedNewPkg = (await pkgs[currentPkg])[currentIcon];
+			const importedOldPkg = pkgs[oldPkg][oldIcon];
+			const importedNewPkg = pkgs[currentPkg][currentIcon];
 
 			removeAllChildren(svg);
 			removeOldPkgAttributeValues(svg, importedOldPkg);
@@ -48,66 +42,53 @@ const observe = function (pkgs) {
 		}
 	})
 
-	for (let i = 0; i < svgListLength; i++) {
-		const svg = svgList[i];
+	forEach(svgArrayFiltered, svg => {
 
 		mutationObserver.observe(svg, {attributeFilter: ['pkg', 'icon'], attributeOldValue: true});
-	}
+	})
 };
 
 const setAttributesFromObject = function (element, object) {
 
-	for (const attribute in object) {
-		let values = object[attribute];
+	forIn(object, (values, attribute) => {
 
 		if (!Array.isArray(values)) {
 			const currentAttr = element.getAttribute(attribute);
 
-			if (currentAttr) {
-				values = values + ' ' + currentAttr;
-			}
+			if (currentAttr) values = values + ' ' + currentAttr;
 
 			element.setAttribute(attribute, values);
 		}
-	}
+	});
 };
 
 const generateElementAndAppend = function (svg, iconObject) {
 
-	for (const elementName in iconObject) {
-		const elementArray = iconObject[elementName];
+	forIn(iconObject, (elementArray, elementName) => {
 
 		if (Array.isArray(elementArray)) {
-			const valuesLength = elementArray.length;
 
-			for (let i = 0; i < valuesLength; i++) {
-				const elementObject = elementArray[i];
+			forEach(elementArray, elementObject => {
 
 				const createdElement = document.createElementNS("http://www.w3.org/2000/svg", elementName);
 
 				setAttributesFromObject(createdElement, elementObject);
 
 				svg.appendChild(createdElement);
-			}
+			})
 		}
-	}
+	})
 };
 
 const removeAllChildren = function (svg) {
 	const children = Array.from(svg.children);
-	const childrenLength = children.length;
 
-	for (let i = 0; i < childrenLength; i++) {
-		const child = children[i];
-
-		child.remove();
-	}
+	forEach(children,child => child.remove());
 };
 
 const removeOldPkgAttributeValues = function (svg, importedOldPkg) {
 
-	for (const attribute in importedOldPkg) {
-		const oldValues = importedOldPkg[attribute];
+	forIn(importedOldPkg, (oldValues, attribute) => {
 
 		if (!Array.isArray(oldValues)) {
 			const currentAttr = svg.getAttribute(attribute);
@@ -119,5 +100,23 @@ const removeOldPkgAttributeValues = function (svg, importedOldPkg) {
 				svg.setAttribute(attribute, replacement);
 			}
 		}
+	})
+};
+
+const forIn = function (object, callback) {
+
+	for (const key in object) {
+
+		if (Object.prototype.hasOwnProperty.call(object, key)) {
+			callback(object[key], key)
+		}
 	}
 };
+
+const forEach = function (array, callback) {
+	const arrayLength = array.length;
+
+	for (let i = 0; i < arrayLength; i++) {
+		callback(array[i], i, arrayLength);
+	}
+}

@@ -52,7 +52,7 @@
 	},
 	"dependencies": {
 		"commander": "^7.2.0",
-		"hydra-generator": "^0.0.3",
-		"hydra-purge": "^0.0.4"
+		"hydra-generator": "^0.0.4",
+		"hydra-purge": "^0.0.5"
 	}
 }

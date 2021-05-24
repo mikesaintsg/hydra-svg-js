@@ -36,18 +36,18 @@
 		"fontawesome"
 	],
 	"devDependencies": {
-		"@babel/cli": "^7.13.0",
-		"@babel/core": "^7.13.8",
-		"@babel/preset-env": "^7.13.9",
-		"@babel/register": "^7.13.8",
+		"@babel/cli": "^7.14.3",
+		"@babel/core": "^7.14.3",
+		"@babel/preset-env": "^7.14.2",
+		"@babel/register": "^7.13.16",
 		"babel-loader": "^8.2.2",
-		"chai": "^4.3.3",
-		"core-js": "^3.9.1",
-		"eslint": "^7.21.0",
-		"jsdom": "^16.4.0",
-		"mocha": "^8.3.0",
+		"chai": "^4.3.4",
+		"core-js": "^3.12.1",
+		"eslint": "^7.27.0",
+		"jsdom": "^16.6.0",
+		"mocha": "^8.4.0",
 		"nyc": "^15.1.0",
-		"webpack": "^5.37.0",
+		"webpack": "^5.37.1",
 		"webpack-cli": "^4.7.0"
 	},
 	"dependencies": {

@@ -1,16 +1,17 @@
-const svgArrayFiltered = Array.from(document.getElementsByTagName('svg'))
-	.filter(element => element.hasAttribute('pkg') && element.hasAttribute('icon'));
+const svgArray = Array.from(document.getElementsByTagName('svg'))
 
 exports.hydrate = async function (pkgs, options = {observe: false}) {
 
-	forEach(svgArrayFiltered, svg => {
+	forEach(svgArray, svg => {
 		const pkgName = svg.getAttribute('pkg');
 		const iconName = svg.getAttribute('icon');
 
-		const importedPkgIcon = pkgs[pkgName][iconName];
+		if(pkgName && iconName){
+			const importedPkgIcon = pkgs[pkgName][iconName];
 
-		setAttributesFromObject(svg, importedPkgIcon);
-		generateElementAndAppend(svg, importedPkgIcon);
+			setAttributesFromObject(svg, importedPkgIcon);
+			generateElementAndAppend(svg, importedPkgIcon);
+		}
 	})
 
 	if (options.observe) observe(pkgs);
@@ -42,9 +43,16 @@ const observe = function (pkgs) {
 		}
 	})
 
-	forEach(svgArrayFiltered, svg => {
+	forEach(svgArray, svg => {
+		const hasPkg = svg.hasAttribute('pkg');
+		const hasIcon = svg.hasAttribute('icon');
 
-		mutationObserver.observe(svg, {attributeFilter: ['pkg', 'icon'], attributeOldValue: true});
+		if(hasPkg && hasIcon) {
+			mutationObserver.observe(svg, {
+				attributeFilter: ['pkg', 'icon'],
+				attributeOldValue: true
+			});
+		}
 	})
 };
 
@@ -114,9 +122,10 @@ const forIn = function (object, callback) {
 };
 
 const forEach = function (array, callback) {
-	const arrayLength = array.length;
+	const length = array.length;
 
-	for (let i = 0; i < arrayLength; i++) {
-		callback(array[i], i, arrayLength);
+	let i = -1
+	while (++i !== length) {
+		callback(array[i])
 	}
 }

@@ -1,12 +1,12 @@
-const svgArray = Array.from(document.getElementsByTagName('svg'))
+const svgArray = [].slice.call(document.getElementsByTagName('svg'))
 
-exports.hydrate = async function (pkgs, options = {observe: false}) {
+const hydrate = function (pkgs, options = {observe: false}) {
 
 	forEach(svgArray, svg => {
 		const pkgName = svg.getAttribute('pkg');
 		const iconName = svg.getAttribute('icon');
 
-		if(pkgName && iconName){
+		if (pkgName && iconName) {
 			const importedPkgIcon = pkgs[pkgName][iconName];
 
 			setAttributesFromObject(svg, importedPkgIcon);
@@ -47,7 +47,7 @@ const observe = function (pkgs) {
 		const hasPkg = svg.hasAttribute('pkg');
 		const hasIcon = svg.hasAttribute('icon');
 
-		if(hasPkg && hasIcon) {
+		if (hasPkg && hasIcon) {
 			mutationObserver.observe(svg, {
 				attributeFilter: ['pkg', 'icon'],
 				attributeOldValue: true
@@ -89,9 +89,9 @@ const generateElementAndAppend = function (svg, iconObject) {
 };
 
 const removeAllChildren = function (svg) {
-	const children = Array.from(svg.children);
+	const children = [].slice.call(svg.children);
 
-	forEach(children,child => child.remove());
+	forEach(children, child => child.remove());
 };
 
 const removeOldPkgAttributeValues = function (svg, importedOldPkg) {
@@ -114,10 +114,7 @@ const removeOldPkgAttributeValues = function (svg, importedOldPkg) {
 const forIn = function (object, callback) {
 
 	for (const key in object) {
-
-		if (Object.prototype.hasOwnProperty.call(object, key)) {
-			callback(object[key], key)
-		}
+		callback(object[key], key)
 	}
 };
 
@@ -129,3 +126,5 @@ const forEach = function (array, callback) {
 		callback(array[i])
 	}
 }
+
+module.exports = hydrate;

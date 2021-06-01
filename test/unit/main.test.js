@@ -1,6 +1,6 @@
 const testCase = require('../cases/testCase.js');
 const generateDom = require('../dom/generateDom.js');
-const hydra = require("../../src/main.js");
+const hydrate = require("../../src/main.js");
 
 testCase()
 generateDom(`
@@ -10,12 +10,12 @@ generateDom(`
 
 describe("hydra", function () {
 	it("main", function () {
-		hydra.hydrate({
+		hydrate({
 			'fontawesome': require('../packs/fontawesome.js'),
 			'heroicons': require('../packs/heroicons.js')
 		})
 
-document.getElementById('target').setAttribute('icon', 'something')
+		document.getElementById('target').setAttribute('icon', 'something')
 
 	})
 })

@@ -4,18 +4,16 @@ const hydrate = require("../../src/main.js");
 
 testCase()
 generateDom(`
-<svg pkg="heroicons" icon="academicCap" id="target"></svg>
-<svg pkg="fontawesome" icon="atom" id="nottarget"></svg>`)
+<svg pkg="feather" icon="activity" id="target"></svg>`)
 
 
 describe("hydra", function () {
 	it("main", function () {
 		hydrate({
-			'fontawesome': require('../packs/fontawesome.js'),
-			'heroicons': require('../packs/heroicons.js')
+			'feather': require('../packs/feather.json'),
+			'zondicons': require('../packs/zondicons.json')
 		})
 
-		document.getElementById('target').setAttribute('icon', 'something')
-
+		//const target = document.getElementById('target')
 	})
 })

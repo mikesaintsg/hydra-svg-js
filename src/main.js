@@ -1,8 +1,8 @@
-const svgArray = [].slice.call(document.getElementsByTagName('svg'))
+//const svgs = [].slice.call(document.getElementsByTagName('svg'))
 
-const hydrate = function (pkgs, options = {observe: false}) {
+const hydrate = function (pkgs, svgs, options = {observe: false}) {
 
-	forEach(svgArray, svg => {
+	forEach(svgs, svg => {
 		const pkgName = svg.getAttribute('pkg');
 		const iconName = svg.getAttribute('icon');
 
@@ -10,14 +10,14 @@ const hydrate = function (pkgs, options = {observe: false}) {
 			const importedPkgIcon = pkgs[pkgName][iconName];
 
 			setAttributesFromObject(svg, importedPkgIcon);
-			generateElementAndAppend(svg, importedPkgIcon);
+			createChildFromObjectAndAppend(svg, importedPkgIcon);
 		}
 	})
 
-	if (options.observe) observe(pkgs);
+	if (options.observe) observe(pkgs, svgs);
 };
 
-const observe = function (pkgs) {
+const observe = function (pkgs, svgs) {
 
 	const mutationObserver = new window.MutationObserver(mutations => {
 
@@ -39,11 +39,11 @@ const observe = function (pkgs) {
 			removeOldPkgAttributeValues(svg, importedOldPkg);
 
 			setAttributesFromObject(svg, importedNewPkg);
-			generateElementAndAppend(svg, importedNewPkg);
+			createChildFromObjectAndAppend(svg, importedNewPkg);
 		}
 	})
 
-	forEach(svgArray, svg => {
+	forEach(svgs, svg => {
 		const hasPkg = svg.hasAttribute('pkg');
 		const hasIcon = svg.hasAttribute('icon');
 
@@ -70,7 +70,7 @@ const setAttributesFromObject = function (element, object) {
 	});
 };
 
-const generateElementAndAppend = function (svg, iconObject) {
+const createChildFromObjectAndAppend = function (svg, iconObject) {
 
 	forIn(iconObject, (elementArray, elementName) => {
 

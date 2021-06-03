@@ -70,7 +70,7 @@ const setAttributesFromObject = function (element, object) {
 	});
 };
 
-const createChildFromObjectAndAppend = function (svg, iconObject) {
+const createChildFromObjectAndAppend = function (element, iconObject) {
 
 	forIn(iconObject, (elementArray, elementName) => {
 
@@ -82,30 +82,30 @@ const createChildFromObjectAndAppend = function (svg, iconObject) {
 
 				setAttributesFromObject(createdElement, elementObject);
 
-				svg.appendChild(createdElement);
+				element.appendChild(createdElement);
 			})
 		}
 	})
 };
 
-const removeAllChildren = function (svg) {
-	const children = [].slice.call(svg.children);
+const removeAllChildren = function (element) {
+	const children = [].slice.call(element.children);
 
 	forEach(children, child => child.remove());
 };
 
-const removeOldPkgAttributeValues = function (svg, importedOldPkg) {
+const removeOldPkgAttributeValues = function (element, importedOldPkg) {
 
 	forIn(importedOldPkg, (oldValues, attribute) => {
 
 		if (!Array.isArray(oldValues)) {
-			const currentAttr = svg.getAttribute(attribute);
+			const currentAttr = element.getAttribute(attribute);
 			const replacement = currentAttr.replace(oldValues, "");
 
 			if (currentAttr.replace(oldValues, "").trim() === "") {
-				svg.removeAttribute(attribute);
+				element.removeAttribute(attribute);
 			} else {
-				svg.setAttribute(attribute, replacement);
+				element.setAttribute(attribute, replacement);
 			}
 		}
 	})

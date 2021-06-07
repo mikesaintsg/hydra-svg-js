@@ -2,7 +2,16 @@
 	"name": "hydra-svg-js",
 	"version": "0.0.35",
 	"description": "Hydrate SVG tags with icons from your favorite libraries",
-	"main": "dist/main.js",
+	"type": "module",
+	"main": "dist/main.cjs",
+	"module": "dist/main.mjs",
+	"browser": "dist/main.js",
+	"exports": {
+		".": {
+			"import": "./dist/main.mjs",
+			"require": "./dist/main.cjs"
+		}
+	},
 	"bin": {
 		"hydra": "bin/cli.js"
 	},
@@ -10,8 +19,8 @@
 		"dist"
 	],
 	"scripts": {
+		"dist": "rollup -c config/rollup.config.js",
 		"hydra": "node bin/cli.js",
-		"dist": "webpack --config ./config/webpack.config.js",
 		"lint": "eslint .",
 		"test": "mocha \"./test/**/**.test.js\" --recursive --require @babel/register",
 		"cover": "nyc --reporter=text yarn test"
@@ -40,15 +49,17 @@
 		"@babel/core": "^7.14.3",
 		"@babel/preset-env": "^7.14.4",
 		"@babel/register": "^7.13.16",
-		"babel-loader": "^8.2.2",
+		"@rollup/plugin-babel": "^5.3.0",
+		"@rollup/plugin-commonjs": "^19.0.0",
+		"@rollup/plugin-node-resolve": "^13.0.0",
 		"chai": "^4.3.4",
 		"core-js": "^3.13.1",
 		"eslint": "^7.27.0",
 		"jsdom": "^16.6.0",
 		"mocha": "^8.4.0",
 		"nyc": "^15.1.0",
-		"webpack": "^5.38.1",
-		"webpack-cli": "^4.7.0"
+		"rollup": "^2.51.0",
+		"rollup-plugin-terser": "^7.0.2"
 	},
 	"dependencies": {
 		"commander": "^7.2.0",

@@ -1,8 +1,8 @@
 import forIn from './forIn.js';
 
-export default function (element, importedOldPkg) {
+export default function (element, importedOldPack) {
 
-	forIn(importedOldPkg, (oldValues, attribute) => {
+	forIn(importedOldPack, (oldValues, attribute) => {
 
 		if (!Array.isArray(oldValues)) {
 			const currentAttr = element.getAttribute(attribute);

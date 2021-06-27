@@ -10,6 +10,10 @@
 		".": {
 			"import": "./dist/main.mjs",
 			"require": "./dist/main.cjs"
+		},
+		"./utils/*": {
+			"import": "./dist/utils/*.mjs",
+			"require": "./dist/utils/*.cjs"
 		}
 	},
 	"bin": {

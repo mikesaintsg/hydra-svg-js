@@ -1,10 +1,13 @@
 #!/usr/bin/env node
-const {Command} = require('commander');
 
-const generate = require('hydra-generator')
-const purge = require('hydra-purge')
+import {Command} from 'commander';
 
-const npmPkg = require('../package.json')
+import generate from 'hydra-generator';
+import purge from 'hydra-purge';
+
+import fs from 'fs';
+
+const npmPkg = JSON.parse(fs.readFileSync('./package.json', "utf-8"))
 
 cli().catch(err => {
 	console.error(err);

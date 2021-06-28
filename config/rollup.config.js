@@ -8,6 +8,21 @@ import pkg from '../package.json';
 import fs from 'fs';
 import path from 'path';
 
+import generate from 'hydra-generator';
+
+const packs = fs.readdirSync('./src/packs');
+
+(async ()=>{
+	await Promise.all(packs.map(pack => {
+		generate({
+			input: `src/packs/${pack}`,
+			output: 'dist/packs',
+			name: `${pack}.json`,
+			config: ''
+		});
+	}))
+})()
+
 const plugins = [
 	resolve(),
 	commonjs(),

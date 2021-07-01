@@ -11,14 +11,7 @@ const fsPromises = fs.promises;
 
 const {JSDOM} = jsdom;
 
-const generate = async function (options) {
-
-	if (options.config) {
-		const configPath = path.prefixCwd(options.config);
-
-		if (fs.existsSync(configPath)) Object.assign(options, require(configPath));
-	}
-
+export default async function (options) {
 	const {name, input, output} = options;
 
 	const outputPath = path.prefixCwd(output, name)
@@ -45,5 +38,3 @@ const generate = async function (options) {
 
 	await fsPromises.ensureFile(outputPath, JSON.stringify(inputObject));
 }
-
-export default generate;

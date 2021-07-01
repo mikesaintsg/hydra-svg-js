@@ -3,7 +3,7 @@ import setAttributes from './utils/setAttributes.js';
 import createChildAppend from './utils/createChildAppend.js';
 import observe from './observe.js';
 
-const hydrate = function (packs, svgs, options = {observe: false}) {
+export default function (packs, svgs, options = {observe: false}) {
 
 	forEach(svgs, svg => {
 		const packName = svg.getAttribute('pack');
@@ -18,6 +18,4 @@ const hydrate = function (packs, svgs, options = {observe: false}) {
 	})
 
 	if (options.observe) observe(packs, svgs);
-};
-
-export default hydrate;
+}

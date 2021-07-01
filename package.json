@@ -36,16 +36,12 @@
 			"require": "./dist/plugs/*.cjs"
 		}
 	},
-	"bin": {
-		"hydra": "bin/cli.js"
-	},
 	"files": [
 		"dist"
 	],
 	"scripts": {
 		"prepublishOnly": "yarn dist",
 		"dist": "node config/generatePacks.js && rollup -c config/rollup.config.js",
-		"hydra": "node bin/cli.js",
 		"lint": "eslint .",
 		"test": "mocha \"./test/**/**.test.js\" --recursive --require @babel/register",
 		"cover": "nyc --reporter=text yarn test"

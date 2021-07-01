@@ -1,5 +1,5 @@
 import path from './exts/path.js';
-import fs from './exts/fs';
+import fs from './exts/fs.js';
 
 const fsPromises = fs.promises;
 
@@ -8,15 +8,10 @@ const {JSDOM} = jsdom;
 
 import _get from 'lodash/get.js';
 import _set from 'lodash/set.js';
-import forIn from "./utils/forIn";
-import forEach from "./utils/forEach";
+import forIn from "./utils/forIn.js";
+import forEach from "./utils/forEach.js";
 
-const purge = async function (options) {
-
-	const configPath = path.prefixCwd(options.config)
-
-	if (fs.existsSync(configPath)) Object.assign(options, require(configPath))
-
+export default async function (options) {
 	const {name, input, output, extensions, packages, overrides} = options;
 
 	const outputPath = path.prefixCwd(output, name)
@@ -40,24 +35,22 @@ const purge = async function (options) {
 		.flat()
 		.reduce((acc, svg) => {
 			const iconName = svg.getAttribute('icon')
-			const pkgName = svg.getAttribute('pkg')
+			const packName = svg.getAttribute('pack')
 
-			const pkgIconObject = _get(packages, [pkgName, iconName], null);
+			const packIconObject = _get(packages, [packName, iconName], null);
 
-			if (pkgIconObject) _set(acc, [pkgName, iconName], pkgIconObject);
+			if (packIconObject) _set(acc, [packName, iconName], packIconObject);
 
 			return acc
 		}, {})
 
-	forIn(overrides, (overrideArray, pkgName) => {
+	forIn(overrides, (overrideArray, packName) => {
 		forEach(overrideArray, iconName => {
-			const pkgIconObject = _get(packages, [pkgName, iconName], null);
+			const packIconObject = _get(packages, [packName, iconName], null);
 
-			if (pkgIconObject) _set(inputObject, [pkgName, iconName], pkgIconObject);
+			if (packIconObject) _set(inputObject, [packName, iconName], packIconObject);
 		})
 	})
 
 	await fsPromises.ensureFile(outputPath, JSON.stringify(inputObject));
 }
-
-export default purge;

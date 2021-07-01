@@ -4,7 +4,7 @@ import setAttributes from "./utils/setAttributes.js";
 import createChildAppend from "./utils/createChildAppend.js";
 import forEach from "./utils/forEach.js";
 
-const observe = function (packs, svgs) {
+export default function (packs, svgs) {
 
 	const mutationObserver = new window.MutationObserver(mutations => {
 
@@ -41,6 +41,4 @@ const observe = function (packs, svgs) {
 			});
 		}
 	})
-};
-
-export default observe;
+}

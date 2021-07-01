@@ -11,6 +11,10 @@
 			"require": "./dist/hydrate.cjs"
 		},
 		"./packs/*": "./dist/packs/*",
+		"./purge": {
+			"import": "./dist/purge.mjs",
+			"require": "./dist/purge.cjs"
+		},
 		"./generate": {
 			"import": "./dist/generate.mjs",
 			"require": "./dist/generate.cjs"
@@ -86,7 +90,6 @@
 	"dependencies": {
 		"colors": "^1.4.0",
 		"commander": "^8.0.0",
-		"hydra-purge": "^0.0.6",
 		"jsdom": "^16.6.0",
 		"lodash": "^4.17.21",
 		"svgo": "^2.3.1"

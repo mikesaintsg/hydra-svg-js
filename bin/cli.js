@@ -2,8 +2,8 @@
 
 import {Command} from 'commander';
 
-import generate from '../src/generate.js';
-import purge from 'hydra-purge';
+import generate from '../dist/generate.mjs';
+import purge from '../dist/purge.mjs';
 
 import fs from 'fs';
 

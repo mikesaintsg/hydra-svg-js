@@ -43,6 +43,7 @@
 		"dist"
 	],
 	"scripts": {
+		"prepublishOnly": "yarn dist",
 		"dist": "node config/generatePacks.js && rollup -c config/rollup.config.js",
 		"hydra": "node bin/cli.js",
 		"lint": "eslint .",

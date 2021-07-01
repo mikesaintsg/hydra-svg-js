@@ -1,9 +1,9 @@
 import path from './exts/path.js';
-import fs from './exts/fs';
+import fs from './exts/fs.js';
 import jsdom from "jsdom";
-import Optimizer from './plugs/optimizer';
+import Optimizer from './plugs/optimizer.js';
 
-import _camelCase from 'lodash/camelCase';
+import _camelCase from 'lodash/camelCase.js';
 
 import createElementObject from './utils/createElementObject.js';
 

@@ -1,8 +1,8 @@
-import removeChildren from "./utils/removeChildren";
-import removePackAttributes from "./utils/removePackAttributes";
-import setAttributes from "./utils/setAttributes";
-import createChildAppend from "./utils/createChildAppend";
-import forEach from "./utils/forEach";
+import removeChildren from "./utils/removeChildren.js";
+import removePackAttributes from "./utils/removePackAttributes.js";
+import setAttributes from "./utils/setAttributes.js";
+import createChildAppend from "./utils/createChildAppend.js";
+import forEach from "./utils/forEach.js";
 
 const observe = function (packs, svgs) {
 

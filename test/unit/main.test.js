@@ -1,6 +1,6 @@
 const testCase = require('../cases/testCase.js');
 const generateDom = require('../dom/generateDom.js');
-const hydrate = require("../../src/main.js");
+const hydrate = require("../../src/hydrate.js");
 
 testCase()
 generateDom(`

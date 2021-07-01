@@ -1,4 +1,4 @@
-import {optimize, extendDefaultPlugins} from 'svgo';
+import {extendDefaultPlugins, optimize} from 'svgo';
 
 class Optimizer {
 	optimizeContents(contents) {

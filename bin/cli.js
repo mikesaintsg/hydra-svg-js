@@ -2,7 +2,7 @@
 
 import {Command} from 'commander';
 
-import generate from '../src/generator.js';
+import generate from '../src/generate.js';
 import purge from 'hydra-purge';
 
 import fs from 'fs';

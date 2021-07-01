@@ -1,25 +1,8 @@
-import forEach from './utils/forEach.js';
-import setAttributes from './utils/setAttributes.js';
-import createChildAppend from './utils/createChildAppend.js';
-import removeChildren from './utils/removeChildren.js';
-import removePackAttributes from './utils/removePackAttributes.js';
-
-const hydrate = function (packs, svgs, options = {observe: false}) {
-
-	forEach(svgs, svg => {
-		const packName = svg.getAttribute('pack');
-		const iconName = svg.getAttribute('icon');
-
-		if (packName && iconName) {
-			const importedPackIcon = packs[packName][iconName];
-
-			setAttributes(svg, importedPackIcon);
-			createChildAppend(svg, importedPackIcon);
-		}
-	})
-
-	if (options.observe) observe(packs, svgs);
-};
+import removeChildren from "./utils/removeChildren";
+import removePackAttributes from "./utils/removePackAttributes";
+import setAttributes from "./utils/setAttributes";
+import createChildAppend from "./utils/createChildAppend";
+import forEach from "./utils/forEach";
 
 const observe = function (packs, svgs) {
 
@@ -60,4 +43,4 @@ const observe = function (packs, svgs) {
 	})
 };
 
-export default hydrate;
+export default observe;

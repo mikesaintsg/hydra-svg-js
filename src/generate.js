@@ -1,20 +1,19 @@
 import path from './exts/path.js';
 import fs from './exts/fs';
-
-const fsPromises = fs.promises;
-
 import jsdom from "jsdom";
-const {JSDOM} = jsdom;
-
-import Optimizer from './plugins/optimizer';
+import Optimizer from './plugs/optimizer';
 
 import _camelCase from 'lodash/camelCase';
 
 import createElementObject from './utils/createElementObject.js';
 
+const fsPromises = fs.promises;
+
+const {JSDOM} = jsdom;
+
 const generate = async function (options) {
 
-	if(options.config) {
+	if (options.config) {
 		const configPath = path.prefixCwd(options.config);
 
 		if (fs.existsSync(configPath)) Object.assign(options, require(configPath));

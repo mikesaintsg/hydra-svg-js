@@ -39,7 +39,7 @@
 		"dist"
 	],
 	"scripts": {
-		"dist": "rollup -c config/rollup.config.js",
+		"dist": "node config/generatePacks.js && rollup -c config/rollup.config.js",
 		"hydra": "node bin/cli.js",
 		"lint": "eslint .",
 		"test": "mocha \"./test/**/**.test.js\" --recursive --require @babel/register",
@@ -84,6 +84,7 @@
 		"rollup-plugin-terser": "^7.0.2"
 	},
 	"dependencies": {
+		"colors": "^1.4.0",
 		"commander": "^8.0.0",
 		"hydra-purge": "^0.0.6",
 		"jsdom": "^16.6.0",

@@ -32,19 +32,14 @@ fsPromises.allFiles = async function (dirPath, filesArray = []) {
 
 		const item = itemArray[i];
 
-		const fullPath = dirPath + "/" + item.name
+		const fullPath = path.join(dirPath, item.name)
 
-		if (item.isDirectory()) {
-
+		if (item.isDirectory())
 			filesArray = await fsPromises.allFiles(fullPath, filesArray);
-		}
 
-		if (item.isFile()) {
-
+		if (item.isFile())
 			filesArray.push({fullPath, ...path.parse(fullPath)})
-		}
 	}
-
 
 	return filesArray;
 }

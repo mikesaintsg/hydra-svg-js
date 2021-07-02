@@ -3,6 +3,6 @@ export default function (array, callback) {
 
 	let i = -1
 	while (++i !== length) {
-		callback(array[i])
+		callback(array[i], i)
 	}
 }

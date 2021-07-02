@@ -1,6 +1,6 @@
 {
 	"name": "hydra-svg-js",
-	"version": "0.0.41",
+	"version": "0.0.42",
 	"description": "Hydrate SVG tags with icons from your favorite libraries",
 	"type": "module",
 	"main": "dist/hydrate.cjs",

@@ -3,14 +3,12 @@ import fs from './exts/fs.js';
 
 const fsPromises = fs.promises;
 
-const glob = require("glob");
+import glob from "glob";
 
 import forEach from "./utils/forEach.js";
 import uniqueArray from "./utils/uniqueArray";
 
-export default async function (options) {
-	const {input, output, packages} = options;
-
+export default async function (input, output, packages) {
 	const outputPath = path.prefixCwd(output)
 	const inputPath = path.prefixCwd(input);
 

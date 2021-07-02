@@ -1,20 +1,19 @@
 import path from './exts/path.js';
 import fs from './exts/fs.js';
-import jsdom from "jsdom";
+
+const fsPromises = fs.promises;
+
 import Optimizer from './plugs/optimizer.js';
 
 import _camelCase from 'lodash/camelCase.js';
 
 import createElementObject from './utils/createElementObject.js';
 
-const fsPromises = fs.promises;
-
+import jsdom from "jsdom";
 const {JSDOM} = jsdom;
 
-export default async function (options) {
-	const {name, input, output} = options;
-
-	const outputPath = path.prefixCwd(output, name)
+export default async function (input, output) {
+	const outputPath = path.prefixCwd(output)
 	const inputPath = path.prefixCwd(input);
 
 	const inputFiles = await fsPromises.allFiles(inputPath);

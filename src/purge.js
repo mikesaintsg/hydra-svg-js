@@ -26,13 +26,15 @@ export default async function (input, output, packages) {
 
 		const packNames = Object.keys(packages);
 
+		const unique = uniqueArray(array)
+
 		forEach(packNames, packName => {
 
-			if(uniqueArray(array).includes(packName)) {
+			if(unique.includes(packName)) {
 
 				const iconNames = Object.keys(packages[packName])
 
-				const filtered = iconNames.filter(iconName => uniqueArray.includes(iconName))
+				const filtered = iconNames.filter(iconName => unique.includes(iconName))
 
 				forEach(filtered, iconName => {
 					const iconPack = packages[packName][iconName];

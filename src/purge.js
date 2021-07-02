@@ -3,52 +3,52 @@ import fs from './exts/fs.js';
 
 const fsPromises = fs.promises;
 
-import jsdom from "jsdom";
-const {JSDOM} = jsdom;
+const glob = require("glob");
 
-import _get from 'lodash/get.js';
-import _set from 'lodash/set.js';
-import forIn from "./utils/forIn.js";
 import forEach from "./utils/forEach.js";
+import uniqueArray from "./utils/uniqueArray";
 
 export default async function (options) {
-	const {name, input, output, extensions, packages, overrides} = options;
+	const {input, output, packages} = options;
 
-	const outputPath = path.prefixCwd(output, name)
+	const outputPath = path.prefixCwd(output)
 	const inputPath = path.prefixCwd(input);
 
-	const inputFiles = await fsPromises.allFiles(inputPath);
+	const files = glob.sync(inputPath);
 
-	const inputFilesFiltered = inputFiles.filter(({ext}) => extensions.includes(ext))
+	const inputObject = {};
 
-	const inputFilesMap = inputFilesFiltered.map(async ({fullPath}) => {
-		const fileContents = await fsPromises.readFile(fullPath, "utf-8")
+	forEach(files, file => {
 
-		const document = new JSDOM(fileContents).window.document;
+		const content = fs.readFileSync(file, 'utf-8');
 
-		return [].slice.call(document.getElementsByTagName('svg'));
-	})
+		const string = content.replace(/[^A-Za-z0-9]/gm, ' ');
 
-	const inputFilesPromised = await Promise.all(inputFilesMap)
+		const array = string.split(/\s+/gm);
 
-	const inputObject = inputFilesPromised
-		.flat()
-		.reduce((acc, svg) => {
-			const iconName = svg.getAttribute('icon')
-			const packName = svg.getAttribute('pack')
+		const packNames = Object.keys(packages);
 
-			const packIconObject = _get(packages, [packName, iconName], null);
+		forEach(packNames, packName => {
 
-			if (packIconObject) _set(acc, [packName, iconName], packIconObject);
+			if(uniqueArray(array).includes(packName)) {
 
-			return acc
-		}, {})
+				const iconNames = Object.keys(packages[packName])
 
-	forIn(overrides, (overrideArray, packName) => {
-		forEach(overrideArray, iconName => {
-			const packIconObject = _get(packages, [packName, iconName], null);
+				const filtered = iconNames.filter(iconName => uniqueArray.includes(iconName))
 
-			if (packIconObject) _set(inputObject, [packName, iconName], packIconObject);
+				forEach(filtered, iconName => {
+					const iconPack = packages[packName][iconName];
+
+					const packObject = {
+						[packName]: {
+							...inputObject[packName],
+							[iconName]: iconPack
+						}
+					};
+
+					Object.assign(inputObject, packObject)
+				})
+			}
 		})
 	})
 

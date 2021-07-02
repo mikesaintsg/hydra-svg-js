@@ -3,7 +3,7 @@ import fs from './exts/fs.js';
 
 const fsPromises = fs.promises;
 
-import Optimizer from './plugs/optimizer.js';
+import optimize from './plugs/optimize.js';
 
 import _camelCase from 'lodash/camelCase.js';
 
@@ -12,7 +12,7 @@ import createElementObject from './utils/createElementObject.js';
 import jsdom from "jsdom";
 const {JSDOM} = jsdom;
 
-export default async function (input, output) {
+export default async function(input, output, options = {optimize: {}}) {
 	const outputPath = path.prefixCwd(output)
 	const inputPath = path.prefixCwd(input);
 
@@ -22,7 +22,7 @@ export default async function (input, output) {
 
 		const fileContent = await fsPromises.readFile(path.join(dir, base), 'utf-8');
 
-		const optimizedContent = Optimizer.optimizeContents(fileContent);
+		const optimizedContent = options.optimize ? optimize(fileContent, options.optimize) : fileContent;
 
 		const element = JSDOM.fragment(optimizedContent).firstChild;
 

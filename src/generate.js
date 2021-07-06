@@ -3,6 +3,8 @@ import fs from './exts/fs.js';
 
 const fsPromises = fs.promises;
 
+import fglob from 'fast-glob'
+
 import optimize from './plugs/optimize.js';
 
 import _camelCase from 'lodash/camelCase.js';
@@ -12,13 +14,14 @@ import createElementObject from './utils/createElementObject.js';
 import jsdom from "jsdom";
 const {JSDOM} = jsdom;
 
-export default async function(input, output, options = {optimize: {}}) {
+export default async function (input, output, options = {optimize: {}}) {
 	const outputPath = path.prefixCwd(output)
 	const inputPath = path.prefixCwd(input);
 
-	const inputFiles = await fsPromises.allFiles(inputPath);
+	const inputFiles = await fglob(`${inputPath}/*.svg`, {onlyFiles: true});
 
-	const inputMap = inputFiles.map(async ({dir, base, name}) => {
+	const inputMap = inputFiles.map(async file => {
+		const {dir, base, name} = path.parse(file);
 
 		const fileContent = await fsPromises.readFile(path.join(dir, base), 'utf-8');
 
@@ -35,5 +38,5 @@ export default async function(input, output, options = {optimize: {}}) {
 
 	const inputObject = inputPromises.reduce((acc, curr) => Object.assign(acc, curr), {})
 
-	await fsPromises.ensureFile(outputPath, JSON.stringify(inputObject));
+	await fsPromises.ensureFile(`${outputPath}.json`, JSON.stringify(inputObject));
 }

@@ -3,7 +3,7 @@ import fs from './exts/fs.js';
 
 const fsPromises = fs.promises;
 
-import glob from "glob";
+import fglob from "fast-glob";
 
 import forEach from "./utils/forEach.js";
 import uniqueArray from "./utils/uniqueArray";
@@ -13,7 +13,7 @@ export default async function (input, output, packages, overrides = {includes: {
 	const outputPath = path.prefixCwd(output)
 	const inputPath = path.prefixCwd(input);
 
-	const files = glob.sync(inputPath);
+	const files = await fglob(inputPath, {onlyFiles: true});
 
 	const inputObject = {};
 

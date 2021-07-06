@@ -9,7 +9,7 @@ import colors from 'colors';
 	process.stdout.write("\n" + colors.blue(`Generating Packs...`) + "\n");
 
 	await Promise.all(packs.map(pack => {
-		generate(`src/packs/${pack}`,`dist/packs/${pack}.json`).
+		generate(`src/packs/${pack}`,`dist/packs/${pack}`).
 		then(() => {
 			process.stdout.clearLine(0);
 			process.stdout.cursorTo(0)

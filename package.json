@@ -2,6 +2,12 @@
 	"name": "hydra-svg-js",
 	"version": "0.0.45",
 	"description": "Hydrate SVG tags with icons from your favorite libraries",
+	"scripts": {
+		"prepublishOnly": "yarn dist",
+		"gen": "node config/generatePacks.js",
+		"dist": "npm run gen && rollup -c config/rollup.config.js",
+		"test": "mocha \"./test/**/**.test.js\" --recursive --require @babel/register"
+	},
 	"type": "module",
 	"main": "dist/hydrate.cjs",
 	"module": "dist/hydrate.mjs",
@@ -39,11 +45,6 @@
 	"files": [
 		"dist"
 	],
-	"scripts": {
-		"prepublishOnly": "yarn dist",
-		"dist": "node config/generatePacks.js && rollup -c config/rollup.config.js",
-		"test": "mocha \"./test/**/**.test.js\" --recursive --require @babel/register"
-	},
 	"license": "MIT",
 	"author": "Michael Garcia",
 	"repository": {

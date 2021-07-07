@@ -9,6 +9,8 @@ import optimize from './plugs/optimize.js';
 
 import createElementObject from './utils/createElementObject.js';
 
+import kebabToCamelCase from "./utils/kebabToCamelCase.js";
+
 import jsdom from "jsdom";
 const {JSDOM} = jsdom;
 
@@ -29,11 +31,7 @@ export default async function (input, output, options = {optimize: {}}) {
 
 		const iconObject = createElementObject(element);
 
-		const iconNameStudly = name.split(/[\-_]/)
-			.map(split => split.charAt(0).toUpperCase() + split.slice(1))
-			.join("");
-
-		const iconName = iconNameStudly.charAt(0).toLowerCase() + iconNameStudly.slice(1)
+		const iconName = kebabToCamelCase(name)
 
 		return {[iconName]: iconObject};
 	})

@@ -7,8 +7,6 @@ import fglob from 'fast-glob'
 
 import optimize from './plugs/optimize.js';
 
-import _camelCase from 'lodash/camelCase.js';
-
 import createElementObject from './utils/createElementObject.js';
 
 import jsdom from "jsdom";
@@ -31,7 +29,13 @@ export default async function (input, output, options = {optimize: {}}) {
 
 		const iconObject = createElementObject(element);
 
-		return {[_camelCase(name)]: iconObject};
+		const iconNameStudly = name.split(/[\-_]/)
+			.map(split => split.charAt(0).toUpperCase() + split.slice(1))
+			.join("");
+
+		const iconName = iconNameStudly.charAt(0).toLowerCase() + iconNameStudly.slice(1)
+
+		return {[iconName]: iconObject};
 	})
 
 	const inputPromises = await Promise.all(inputMap)

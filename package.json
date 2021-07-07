@@ -1,6 +1,6 @@
 {
 	"name": "hydra-svg-js",
-	"version": "0.0.45",
+	"version": "0.0.46",
 	"description": "Hydrate SVG tags with icons from your favorite libraries",
 	"scripts": {
 		"prepublishOnly": "yarn dist",

@@ -10,7 +10,9 @@ import uniqueArray from "./utils/uniqueArray";
 import forIn from "./utils/forIn";
 
 export default async function (input, output, packages, overrides = {includes: {}, excludes: {}, extends: {}}) {
+
 	const outputPath = path.prefixCwd(output)
+
 	const inputPath = path.prefixCwd(input);
 
 	const files = await fglob(inputPath, {onlyFiles: true});
@@ -38,6 +40,7 @@ export default async function (input, output, packages, overrides = {includes: {
 				const filtered = iconNames.filter(iconName => unique.includes(iconName))
 
 				forEach(filtered, iconName => {
+
 					const iconPack = packages[packName][iconName];
 
 					const packObject = {
@@ -56,13 +59,19 @@ export default async function (input, output, packages, overrides = {includes: {
 	forIn(overrides, (value, key) => {
 
 		if(key === 'excludes') {
+
 			forIn(overrides.excludes, (iconNames, packName) => {
+
 				forEach(iconNames, iconName => {
+
 					if(inputObject[packName]){
+
 						if(inputObject[packName][iconName]) {
+
 							delete inputObject[packName][iconName];
 
 							if(Object.keys(inputObject[packName]).length === 0) {
+
 								delete inputObject[packName];
 							}
 						}
@@ -72,7 +81,9 @@ export default async function (input, output, packages, overrides = {includes: {
 		}
 
 		if(key === 'extends') {
+
 			forIn(overrides.extends, (iconObject, packName) => {
+
 				const packObject = {
 					[packName]: {
 						...inputObject[packName],
@@ -85,8 +96,11 @@ export default async function (input, output, packages, overrides = {includes: {
 		}
 
 		if(key === 'includes') {
+
 			forIn(overrides.includes, (iconNames, packName) => {
+
 				forEach(iconNames, iconName => {
+
 					const iconPack = packages[packName][iconName];
 
 					const packObject = {

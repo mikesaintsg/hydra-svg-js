@@ -15,12 +15,15 @@ import jsdom from "jsdom";
 const {JSDOM} = jsdom;
 
 export default async function (input, output, options = {optimize: {}}) {
+
 	const outputPath = path.prefixCwd(output)
+
 	const inputPath = path.prefixCwd(input);
 
 	const inputFiles = await fglob(`${inputPath}/*.svg`, {onlyFiles: true});
 
 	const inputMap = inputFiles.map(async file => {
+
 		const {dir, base, name} = path.parse(file);
 
 		const fileContent = await fsPromises.readFile(path.join(dir, base), 'utf-8');

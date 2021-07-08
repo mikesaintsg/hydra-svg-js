@@ -6,7 +6,7 @@ export default function (element, importedOldPack) {
 	forIn(importedOldPack, (value, attribute) => {
 
 		if (!Array.isArray(value)) {
-			unmergeAttribute(element,attribute, value)
+			unmergeAttribute(element, attribute, value)
 		}
 	})
 }

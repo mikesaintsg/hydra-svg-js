@@ -1,17 +1,17 @@
 import path from './exts/path.js';
 import fs from './exts/fs.js';
-
-const fsPromises = fs.promises;
-
 import fglob from 'fast-glob'
 
 import optimize from './plugs/optimize.js';
 
-import IconObject from "./utils/IconObject.js";
+import createIconObject from "./utils/createIconObject.js";
 
-import kebabToCamelCase from "./utils/kebabToCamelCase.js";
+import camelCase from "./utils/camelCase.js";
 
 import jsdom from "jsdom";
+
+const fsPromises = fs.promises;
+
 const {JSDOM} = jsdom;
 
 export default async function (input, output, options = {optimize: {}}) {
@@ -32,9 +32,9 @@ export default async function (input, output, options = {optimize: {}}) {
 
 		const element = JSDOM.fragment(optimizedContent).firstChild;
 
-		const iconObject = new IconObject(element);
+		const iconObject = createIconObject(element);
 
-		const iconName = kebabToCamelCase(name)
+		const iconName = camelCase(name)
 
 		return {[iconName]: iconObject};
 	})

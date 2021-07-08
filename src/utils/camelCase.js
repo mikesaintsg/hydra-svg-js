@@ -1,4 +1,4 @@
-export default function (string){
+export default function (string) {
 	const studly = string.split(/[\-_]/)
 		.map(split => split.charAt(0).toUpperCase() + split.slice(1))
 		.join("");

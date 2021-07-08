@@ -1,7 +1,7 @@
-export default function (element, attribute, value){
+export default function (element, attribute, value) {
 	const current = element.getAttribute(attribute);
 
-	if(current){
+	if (current) {
 		const replacement = current.split(value)
 			.map(attr => attr.replace(/\s+/gm, ' ').trim())
 			.filter(attr => attr !== '')

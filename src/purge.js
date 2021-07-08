@@ -1,13 +1,12 @@
 import path from './exts/path.js';
 import fs from './exts/fs.js';
-
-const fsPromises = fs.promises;
-
 import fglob from "fast-glob";
 
 import forEach from "./utils/forEach.js";
 import uniqueArray from "./utils/uniqueArray";
 import forIn from "./utils/forIn";
+
+const fsPromises = fs.promises;
 
 export default async function (input, output, packages, overrides = {includes: {}, excludes: {}, extends: {}}) {
 
@@ -33,7 +32,7 @@ export default async function (input, output, packages, overrides = {includes: {
 
 		forEach(packNames, packName => {
 
-			if(unique.includes(packName)) {
+			if (unique.includes(packName)) {
 
 				const iconNames = Object.keys(packages[packName])
 
@@ -58,19 +57,19 @@ export default async function (input, output, packages, overrides = {includes: {
 
 	forIn(overrides, (value, key) => {
 
-		if(key === 'excludes') {
+		if (key === 'excludes') {
 
 			forIn(overrides.excludes, (iconNames, packName) => {
 
 				forEach(iconNames, iconName => {
 
-					if(inputObject[packName]){
+					if (inputObject[packName]) {
 
-						if(inputObject[packName][iconName]) {
+						if (inputObject[packName][iconName]) {
 
 							delete inputObject[packName][iconName];
 
-							if(Object.keys(inputObject[packName]).length === 0) {
+							if (Object.keys(inputObject[packName]).length === 0) {
 
 								delete inputObject[packName];
 							}
@@ -80,7 +79,7 @@ export default async function (input, output, packages, overrides = {includes: {
 			})
 		}
 
-		if(key === 'extends') {
+		if (key === 'extends') {
 
 			forIn(overrides.extends, (iconObject, packName) => {
 
@@ -95,7 +94,7 @@ export default async function (input, output, packages, overrides = {includes: {
 			})
 		}
 
-		if(key === 'includes') {
+		if (key === 'includes') {
 
 			forIn(overrides.includes, (iconNames, packName) => {
 

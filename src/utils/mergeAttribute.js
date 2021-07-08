@@ -1,11 +1,11 @@
-export default function (element, attribute, value){
+export default function (element, attribute, value) {
 	const current = element.getAttribute(attribute)
 
-	if(current) {
+	if (current) {
 		if (current.indexOf(value) === -1) {
 			element.setAttribute(attribute, [value, current].join(" "));
 		}
-	}else{
+	} else {
 		element.setAttribute(attribute, value);
 	}
 }

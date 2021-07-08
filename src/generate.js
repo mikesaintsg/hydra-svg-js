@@ -7,7 +7,7 @@ import fglob from 'fast-glob'
 
 import optimize from './plugs/optimize.js';
 
-import createElementObject from './utils/createElementObject.js';
+import IconObject from "./utils/IconObject.js";
 
 import kebabToCamelCase from "./utils/kebabToCamelCase.js";
 
@@ -32,7 +32,7 @@ export default async function (input, output, options = {optimize: {}}) {
 
 		const element = JSDOM.fragment(optimizedContent).firstChild;
 
-		const iconObject = createElementObject(element);
+		const iconObject = new IconObject(element);
 
 		const iconName = kebabToCamelCase(name)
 

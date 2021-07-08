@@ -1,6 +1,6 @@
 import forEach from './forEach.js';
 import forIn from './forIn.js';
-import setAttributes from './setAttributes.js';
+import setObjectAttributes from './setObjectAttributes.js';
 
 export default function (element, iconObject) {
 
@@ -12,7 +12,7 @@ export default function (element, iconObject) {
 
 				const createdElement = document.createElementNS("http://www.w3.org/2000/svg", elementName);
 
-				setAttributes(createdElement, elementObject);
+				setObjectAttributes(createdElement, elementObject);
 
 				element.appendChild(createdElement);
 			})

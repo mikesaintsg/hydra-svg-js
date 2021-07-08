@@ -1,7 +1,7 @@
 import removeChildren from "./utils/removeChildren.js";
 import removePackAttributes from "./utils/removePackAttributes.js";
-import setAttributes from "./utils/setAttributes.js";
-import createChildAppend from "./utils/createChildAppend.js";
+import setObjectAttributes from "./utils/setObjectAttributes.js";
+import appendObjectChild from "./utils/appendObjectChild.js";
 import forEach from "./utils/forEach.js";
 
 export default function (packs, svgs) {
@@ -25,8 +25,8 @@ export default function (packs, svgs) {
 			removeChildren(svg);
 			removePackAttributes(svg, importedOldPack);
 
-			setAttributes(svg, importedNewPack);
-			createChildAppend(svg, importedNewPack);
+			setObjectAttributes(svg, importedNewPack);
+			appendObjectChild(svg, importedNewPack);
 		}
 	})
 

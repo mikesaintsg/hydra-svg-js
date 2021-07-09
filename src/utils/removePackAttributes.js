@@ -1,5 +1,5 @@
 import forIn from './forIn.js';
-import unmergeAttribute from "./unmergeAttribute";
+import unmergeAttribute from "./unmergeAttribute.js";
 
 export default function (element, importedOldPack) {
 

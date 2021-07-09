@@ -1,6 +1,6 @@
 import forIn from './forIn.js';
 
-import mergeAttribute from "./mergeAttribute";
+import mergeAttribute from "./mergeAttribute.js";
 
 export default function (element, object) {
 

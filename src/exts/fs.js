@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import forEach from "../utils/forEach.js";
 
 const fsPromises = fs.promises;
 
@@ -28,9 +29,7 @@ fsPromises.allFiles = async function (dirPath, filesArray = []) {
 
 	const itemArray = await fsPromises.readdir(dirPath, {withFileTypes: true})
 
-	for (let i = 0; i < itemArray.length; i++) {
-
-		const item = itemArray[i];
+	forEach(itemArray, async item => {
 
 		const fullPath = path.join(dirPath, item.name)
 
@@ -39,7 +38,7 @@ fsPromises.allFiles = async function (dirPath, filesArray = []) {
 
 		if (item.isFile())
 			filesArray.push({fullPath, ...path.parse(fullPath)})
-	}
+	})
 
 	return filesArray;
 }

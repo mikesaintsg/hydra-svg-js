@@ -3,7 +3,7 @@ export default function (element, attribute, value) {
 
 	if (current) {
 		if (current.indexOf(value) === -1) {
-			element.setAttribute(attribute, [value, current].join(" "));
+			element.setAttribute(attribute, [current, value].join(" "));
 		}
 	} else {
 		element.setAttribute(attribute, value);

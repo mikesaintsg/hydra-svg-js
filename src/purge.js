@@ -3,8 +3,8 @@ import fs from './exts/fs.js';
 import fglob from "fast-glob";
 
 import forEach from "./utils/forEach.js";
-import uniqueArray from "./utils/uniqueArray";
-import forIn from "./utils/forIn";
+import uniqueArray from "./utils/uniqueArray.js";
+import forIn from "./utils/forIn.js";
 
 const fsPromises = fs.promises;
 

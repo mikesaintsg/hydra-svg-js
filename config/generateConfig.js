@@ -21,17 +21,7 @@ export default function (file) {
 				ignoreDynamicRequires: true
 			}),
 			babel({
-				presets: [
-					[
-						"@babel/preset-env",
-						{
-							targets: {
-								"node": "current"
-							},
-							modules: "auto"
-						}
-					]
-				],
+				...pkg.babel,
 				babelHelpers: 'bundled'
 			}),
 			terser()

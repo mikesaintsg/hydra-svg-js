@@ -1,11 +1,7 @@
-import testCase from '../cases/testCase.js';
 import objectFilter from "../helpers/objectFilter.js";
-import hydratedDom from "../dom/hydratedDom.js";
-import attributesObject from "../../src/utils/attributesObject.js";
 import getById from "../helpers/getById.js";
 import attributesFilteredObject from "../helpers/attributesFilteredObject.js";
-
-testCase()
+import hydrate from "../../src/hydrate.js";
 
 const packs = {
 	"feather": {
@@ -25,30 +21,34 @@ const packs = {
 
 const iconObject = packs.feather.activity;
 
-describe("hydrate function", function () {
+test("will set attributes", () => {
+	document.body.innerHTML = `<svg pack="feather" icon="activity" id="target"></svg>`
 
-	it("will set attributes", function () {
-		const initAttributes = {}
+	const initAttributes = ['pack', 'icon', 'id'];
 
-		hydratedDom(packs, `<svg pack="feather" icon="activity" id="target"></svg>`,
-			() => Object.assign(initAttributes, attributesObject(getById('target'))))
+	const svgs = [].slice.call(document.getElementsByTagName('svg'))
 
-		const expected = objectFilter(iconObject, value => !Array.isArray(value));
+	hydrate(packs, svgs, {observe: false})
 
-		const actual = attributesFilteredObject(getById('target'),
-				name => !Object.keys(initAttributes).includes(name))
+	const expected = objectFilter(iconObject, value => !Array.isArray(value));
 
-		expect(actual).deep.equals(expected);
-	})
+	const actual = attributesFilteredObject(getById('target'),
+		name => !initAttributes.includes(name));
 
-	it("will merge existing attributes", function () {
-		hydratedDom(packs, `<svg pack="feather" icon="activity" id="target" class="existing"></svg>`)
+	expect(actual).toStrictEqual(expected);
+})
 
-		const target = document.getElementById('target');
+test("will merge existing attributes", () => {
+	document.body.innerHTML = `<svg pack="feather" icon="activity" id="target" class="existing"></svg>`
 
-		const expected = `existing ${iconObject.class}`
-		const actual = target.getAttribute("class")
+	const svgs = [].slice.call(document.getElementsByTagName('svg'))
 
-		expect(actual).deep.equals(expected);
-	})
+	hydrate(packs, svgs, {observe: false})
+
+	const target = document.getElementById('target');
+
+	const expected = `existing ${iconObject.class}`
+	const actual = target.getAttribute("class")
+
+	expect(actual).toStrictEqual(expected);
 })

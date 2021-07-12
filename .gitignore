@@ -4,5 +4,5 @@ package-lock.json
 yarn.lock
 *.log
 .nyc_output
-coverage
+coverage/
 dist/

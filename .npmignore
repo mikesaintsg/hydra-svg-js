@@ -3,7 +3,7 @@ src/
 test/
 .idea
 .nyc_output
-coverage
+coverage/
 .editorconfig
 .eslintignore
 .eslintrc.json

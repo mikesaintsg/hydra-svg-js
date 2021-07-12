@@ -1,6 +1,6 @@
 import forEach from './utils/forEach.js';
 import setObjectAttributes from './utils/setObjectAttributes.js';
-import appendObjectChild from './utils/appendObjectChild.js';
+import appendObjectChildren from './utils/appendObjectChildren.js';
 import observe from './observe.js';
 
 export default function (packs, svgs, options = {observe: false}) {
@@ -13,7 +13,7 @@ export default function (packs, svgs, options = {observe: false}) {
 			const importedPackIcon = packs[packName][iconName];
 
 			setObjectAttributes(svg, importedPackIcon);
-			appendObjectChild(svg, importedPackIcon);
+			appendObjectChildren(svg, importedPackIcon);
 		}
 	})
 

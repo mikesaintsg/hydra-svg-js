@@ -6,8 +6,6 @@ import optimize from './plugs/optimize.js';
 
 import createIconObject from "./utils/createIconObject.js";
 
-import camelCase from "./utils/camelCase.js";
-
 import jsdom from "jsdom";
 
 const fsPromises = fs.promises;
@@ -34,9 +32,7 @@ export default async function (input, output, options = {optimize: {}}) {
 
 		const iconObject = createIconObject(element);
 
-		const iconName = camelCase(name)
-
-		return {[iconName]: iconObject};
+		return {[name]: iconObject};
 	})
 
 	const inputPromises = await Promise.all(inputMap)

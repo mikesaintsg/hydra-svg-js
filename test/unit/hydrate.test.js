@@ -3,57 +3,56 @@ import getById from "../helpers/getById.js";
 import attributesFilteredObject from "../helpers/attributesFilteredObject.js";
 import hydrate from "../../src/hydrate.js";
 
-const packs = {
-	"feather": {
-		"hash": {
-			"xmlns": "http://www.w3.org/2000/svg",
-			"width": "24",
-			"height": "24",
-			"viewBox": "0 0 24 24",
-			"fill": "none",
-			"stroke": "currentColor",
-			"stroke-width": "2",
-			"stroke-linecap": "round",
-			"stroke-linejoin": "round",
-			"class": "feather feather-hash",
-			"line": [{"x1": "4", "y1": "9", "x2": "20", "y2": "9"}, {
-				"x1": "4",
-				"y1": "15",
-				"x2": "20",
-				"y2": "15"
-			}, {"x1": "10", "y1": "3", "x2": "8", "y2": "21"}, {"x1": "16", "y1": "3", "x2": "14", "y2": "21"}]
+describe("hydrate function", () => {
+	const packs = {
+		"test-pack": {
+			"test-icon": {
+				"class": "test-class",
+				"test-child": [{"attribute": "value"}],
+				"test-children": [{"attribute": "value"},{"attribute": "value"}]
+			}
 		}
 	}
-}
 
-const iconObject = packs.feather.hash;
+	const iconObject = packs["test-pack"]["test-icon"];
 
-beforeEach(() => {
-	document.body.innerHTML = `<svg pack="feather" icon="hash" id="target"></svg>`
-})
+	let target;
 
-test("will set attributes", () => {
-	const target = getById("target");
+	beforeEach(() => {
+		document.body.innerHTML = `<svg pack="test-pack" icon="test-icon" id="target"></svg>`;
 
-	hydrate(packs, [target], {observe: false})
+		target = getById("target");
+	})
 
-	const expected = objectFilter(iconObject, value => !Array.isArray(value));
+	test("will set attributes", () => {
+		hydrate(packs, [target], {observe: false})
 
-	const actual = attributesFilteredObject(target,
-		name => !['pack', 'icon', 'id'].includes(name));
+		const expected = objectFilter(iconObject, value => !Array.isArray(value));
+		const actual = attributesFilteredObject(target,
+			name => !['pack', 'icon', 'id'].includes(name));
 
-	expect(actual).toStrictEqual(expected);
-})
+		expect(actual).toStrictEqual(expected);
+	})
 
-test("will merge existing attributes", () => {
-	const target = getById("target");
+	test("will merge existing attribute", () => {
+		target.setAttribute("class", "existing");
 
-	target.setAttribute("class", "existing");
+		hydrate(packs, [target], {observe: false})
 
-	hydrate(packs, [target], {observe: false})
+		const expected = `existing ${iconObject.class}`
+		const actual = target.getAttribute("class")
 
-	const expected = `existing ${iconObject.class}`
-	const actual = target.getAttribute("class")
+		expect(actual).toStrictEqual(expected);
+	})
 
-	expect(actual).toStrictEqual(expected);
+	test("will trim whitespace of current attribute when merged", () => {
+		target.setAttribute("class", " existing ");
+
+		hydrate(packs, [target], {observe: false})
+
+		const expected = `existing ${iconObject.class}`
+		const actual = target.getAttribute("class")
+
+		expect(actual).toStrictEqual(expected);
+	})
 })

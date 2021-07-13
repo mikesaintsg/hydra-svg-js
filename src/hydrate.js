@@ -10,10 +10,10 @@ export default function (packs, svgs, options = {observe: false}) {
 		const iconName = svg.getAttribute('icon');
 
 		if (packName && iconName) {
-			const importedPackIcon = packs[packName][iconName];
+			const iconObject = packs[packName][iconName];
 
-			setObjectAttributes(svg, importedPackIcon);
-			appendObjectChildren(svg, importedPackIcon);
+			setObjectAttributes(svg, iconObject);
+			appendObjectChildren(svg, iconObject);
 		}
 	})
 

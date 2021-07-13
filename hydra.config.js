@@ -1,5 +1,5 @@
 import fs from "fs";
-import generate from "../src/generate.js";
+import generate from "./src/generate.js";
 
 import colors from 'colors';
 

@@ -1,7 +1,7 @@
-import objectFilter from "../helpers/objectFilter.js";
-import getById from "../helpers/getById.js";
-import attributesFilteredObject from "../helpers/attributesFilteredObject.js";
-import hydrate from "../../src/hydrate.js";
+import objectFilter from "../src/utils/object/objectFilter.js";
+import getById from "../src/utils/element/getById.js";
+import attributesFilteredObject from "../src/utils/object/attributesFilteredObject.js";
+import hydrate from "../src/hydrate.js";
 
 describe("hydrate function", () => {
 	const packs = {

@@ -1,4 +1,4 @@
-import forEach from "./forEach.js";
+import forEach from "../array/forEach.js";
 import createAttributesObject from "./createAttributesObject.js";
 
 export default function (element) {

@@ -1,4 +1,4 @@
-import forIn from './forIn.js';
+import forIn from '../../object/forIn.js';
 import unmergeAttribute from "./unmergeAttribute.js";
 
 export default function (element, object) {

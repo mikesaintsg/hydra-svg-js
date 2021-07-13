@@ -1,6 +1,6 @@
-import forEach from './forEach.js';
-import forIn from './forIn.js';
-import setObjectAttributes from './setObjectAttributes.js';
+import forEach from '../../array/forEach.js';
+import forIn from '../../object/forIn.js';
+import setObjectAttributes from '../attributes/setObjectAttributes.js';
 
 export default function (element, iconObject) {
 

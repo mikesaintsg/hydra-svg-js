@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import forEach from "../utils/forEach.js";
+import forEach from "../utils/array/forEach.js";
 
 const fsPromises = fs.promises;
 

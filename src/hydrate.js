@@ -1,6 +1,6 @@
-import forEach from './utils/forEach.js';
-import setObjectAttributes from './utils/setObjectAttributes.js';
-import appendObjectChildren from './utils/appendObjectChildren.js';
+import forEach from './utils/array/forEach.js';
+import setObjectAttributes from './utils/element/attributes/setObjectAttributes.js';
+import appendObjectChildren from './utils/element/children/appendObjectChildren.js';
 import observe from './observe.js';
 
 export default function (packs, svgs, options = {observe: false}) {

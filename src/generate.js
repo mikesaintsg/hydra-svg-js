@@ -4,7 +4,7 @@ import fglob from 'fast-glob'
 
 import optimize from './plugs/optimize.js';
 
-import createIconObject from "./utils/createIconObject.js";
+import createIconObject from "./utils/object/createIconObject.js";
 
 import jsdom from "jsdom";
 

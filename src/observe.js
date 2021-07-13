@@ -1,8 +1,8 @@
-import removeChildren from "./utils/removeChildren.js";
-import removeObjectAttributes from "./utils/removeObjectAttributes.js";
-import setObjectAttributes from "./utils/setObjectAttributes.js";
-import appendObjectChildren from "./utils/appendObjectChildren.js";
-import forEach from "./utils/forEach.js";
+import removeChildren from "./utils/element/children/removeChildren.js";
+import removeObjectAttributes from "./utils/element/attributes/removeObjectAttributes.js";
+import setObjectAttributes from "./utils/element/attributes/setObjectAttributes.js";
+import appendObjectChildren from "./utils/element/children/appendObjectChildren.js";
+import forEach from "./utils/array/forEach.js";
 
 export default function (packs, svgs) {
 

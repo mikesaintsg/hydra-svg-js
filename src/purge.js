@@ -2,9 +2,9 @@ import path from './exts/path.js';
 import fs from './exts/fs.js';
 import fglob from "fast-glob";
 
-import forEach from "./utils/forEach.js";
-import uniqueArray from "./utils/uniqueArray.js";
-import forIn from "./utils/forIn.js";
+import forEach from "./utils/array/forEach.js";
+import unique from "./utils/array/unique.js";
+import forIn from "./utils/object/forIn.js";
 
 const fsPromises = fs.promises;
 
@@ -28,15 +28,15 @@ export default async function (input, output, packages, overrides = {includes: {
 
 		const packNames = Object.keys(packages);
 
-		const unique = uniqueArray(array)
+		const uniques = unique(array)
 
 		forEach(packNames, packName => {
 
-			if (unique.includes(packName)) {
+			if (uniques.includes(packName)) {
 
 				const iconNames = Object.keys(packages[packName])
 
-				const filtered = iconNames.filter(iconName => unique.includes(iconName))
+				const filtered = iconNames.filter(iconName => uniques.includes(iconName))
 
 				forEach(filtered, iconName => {
 

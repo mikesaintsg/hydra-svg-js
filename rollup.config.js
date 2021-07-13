@@ -3,10 +3,12 @@ import polyfills from "rollup-plugin-node-polyfills";
 import json from "@rollup/plugin-json";
 import commonjs from "@rollup/plugin-commonjs";
 import {babel} from "@rollup/plugin-babel";
+import babelOptions from "./babel.config.json";
 import {terser} from "rollup-plugin-terser";
-import pkg from "../package.json";
+import pkg from "./package.json";
+import fglob from 'fast-glob';
 
-export default function (file) {
+function config(file) {
 	return {
 		input: `src/${file}.js`,
 		output: [
@@ -21,7 +23,7 @@ export default function (file) {
 				ignoreDynamicRequires: true
 			}),
 			babel({
-				...pkg.babel,
+				...babelOptions,
 				babelHelpers: 'bundled'
 			}),
 			terser()
@@ -29,3 +31,8 @@ export default function (file) {
 		external: Object.keys(pkg.dependencies)
 	}
 }
+
+export default fglob.sync('src/*.js')
+	.map(file => config(
+		file.replace('src/', '').replace('.js', '')
+	));
